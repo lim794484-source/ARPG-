@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>Unity ARPG 项目面试进阶训练手册</title>
+<style>
+:root{--paper:#f7f8f4;--white:#fff;--ink:#1b302d;--muted:#65746d;--teal:#176957;--line:#dce3dc;--mint:#e9f1e9;--orange:#a9552a;--rail:268px}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:108px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 "Segoe UI","Microsoft YaHei","PingFang SC",sans-serif}a{color:var(--teal);text-underline-offset:4px}button,input{font:inherit}button,summary,label.mastered{cursor:pointer}button:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #c47646;outline-offset:4px}button{border:1px solid var(--line);border-radius:7px;background:#fff;padding:7px 14px;color:var(--ink)}button:hover{background:var(--mint)}p{margin:0 0 16px}p:last-child{margin-bottom:0}h1,h2,h3,h4{line-height:1.4;margin:0;font-weight:650}a.skip{position:absolute;top:-80px;left:20px;z-index:20;background:white;padding:10px}.skip:focus{top:10px}[hidden]{display:none!important}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--rail);padding:29px 21px 20px;background:#edf1e9;border-right:1px solid #d7dfd3;overflow:auto;z-index:5}.brand{display:flex;gap:11px;align-items:center;text-decoration:none;color:var(--ink);margin-bottom:28px}.brand-mark{height:38px;width:38px;display:grid;place-items:center;background:var(--ink);color:#fff;font:700 21px/1 Georgia,serif;border-radius:10px}.brand strong{display:block;font-size:14px;letter-spacing:1px}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px}.nav-label{margin:24px 10px 9px;color:#718071;font-size:10px;font-weight:700;letter-spacing:2px}.nav-item{display:flex;align-items:center;gap:10px;margin:3px 0;padding:8px 10px;color:#42544a;text-decoration:none;border-radius:6px;font-size:12px;line-height:1.6}.nav-item span{font:12px/1.6 Consolas,monospace;color:#849085}.nav-item:hover,.nav-item.active{background:white;color:var(--teal)}.nav-item.active{box-shadow:inset 3px 0 var(--teal)}.nav-extra{display:block;font-size:12px;text-decoration:none;color:#536254;padding:6px 10px}.nav-extra:hover{color:var(--teal)}.progress-area{margin:24px 10px 0;padding-top:16px;border-top:1px solid #d4dece}.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#61705d}.progress-label b{color:var(--teal)}progress{width:100%;height:5px;display:block;margin:12px 0;accent-color:var(--teal);border:0;border-radius:4px;background:#d7dfd2}progress::-webkit-progress-bar{background:#d7dfd2;border-radius:4px}progress::-webkit-progress-value{background:var(--teal);border-radius:4px}.progress-note{font-size:10px;color:#75816f}.storage-warning{color:var(--orange)}
+.shell{margin-left:var(--rail)}.toolbar{position:sticky;top:0;background:rgba(247,248,244,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);z-index:4;padding:16px 38px;display:flex;gap:12px;align-items:center}.search-box{position:relative;flex:1;max-width:350px}.search-box span{position:absolute;left:13px;top:6px;color:#728578}.search-box input{width:100%;border:1px solid var(--line);background:white;border-radius:7px;padding:8px 12px 8px 38px;font-size:13px;line-height:1.8}.toolbar .secondary{font-size:12px;white-space:nowrap}.menu-btn{display:none}.spacer{flex:1}.mobile-title{display:none}.content{max-width:1040px;margin:auto;padding:48px 54px 72px}
+.hero{position:relative;padding:0 0 38px;border-bottom:1px solid var(--line);margin-bottom:28px}.hero-top{display:flex;align-items:center;gap:10px;font-size:11px;letter-spacing:1.5px;color:var(--teal);font-weight:650}.dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}.hero h1{font-size:clamp(34px,3.8vw,52px);letter-spacing:-1px;line-height:1.28;margin:20px 0 20px}.hero h1 span{color:var(--teal)}.hero-desc{font-size:15px;line-height:1.95;color:var(--muted);max-width:620px}.hero-bottom{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-top:27px}.metrics{display:flex;gap:28px}.metric b{font:600 29px/1.1 "Segoe UI",sans-serif;letter-spacing:-1px;color:var(--ink)}.metric span{display:block;font-size:11px;color:#718074;margin-top:7px}.start-link{padding:10px 20px;background:var(--teal);color:white;text-decoration:none;border-radius:7px;font-size:13px;white-space:nowrap}.edition{font:10px/1.7 Consolas,monospace;letter-spacing:1px;color:#7d8a7e;margin-left:auto}.guide{background:#eef2eb;border-radius:10px;padding:20px 23px;margin-bottom:35px}.guide>summary{display:flex;align-items:center;justify-content:space-between;list-style:none;font-size:14px;font-weight:600}.guide>summary small{font-size:12px;font-weight:400;color:#7b8877}.guide .prose{padding-top:24px}.guide .context{margin-top:25px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.filter-row{display:flex;gap:16px;align-items:center;margin:0 0 30px;font-size:12px;color:var(--muted)}.filter-row label{display:flex;gap:7px;align-items:center}.filter-row input{accent-color:var(--teal);width:15px;height:15px}.filter-row span{margin-left:auto}.filter-row button{padding:3px 9px;font-size:11px}.chapter{margin-bottom:62px}.chapter-heading{display:flex;align-items:center;gap:19px;margin:33px 0 24px}.chapter-num{font:400 51px/1 Georgia,serif;color:#b5c6b8;letter-spacing:-3px}.eyebrow{font-size:9px;letter-spacing:2px;color:#738679;font-weight:700}.chapter-heading h2{font-size:23px;margin-top:4px;letter-spacing:-.4px}.chapter-range{margin-left:auto;white-space:nowrap;font:11px/1 Consolas,monospace;color:#7b897e;border-bottom:1px solid #bdccbd;padding-bottom:7px}
+.question{background:white;border:1px solid #dfe6de;border-radius:12px;padding:27px 30px 0;margin-bottom:20px;overflow:hidden;box-shadow:0 3px 14px rgba(34,63,37,.025);scroll-margin-top:106px}.question-top{display:flex;gap:12px;align-items:center;margin-bottom:12px}.q-number{font:700 12px/1 Consolas,monospace;letter-spacing:1px;color:var(--teal)}.question-level{font-size:10px;line-height:1;background:#f0f4ee;color:#6d806c;padding:5px 8px;border-radius:4px}.mastered{display:flex;align-items:center;gap:6px;margin-left:auto;color:#8a9588;font-size:11px}.mastered input{width:14px;height:14px;accent-color:var(--teal)}.question.done{border-color:#b6cbb8}.question.done .mastered{color:var(--teal)}.question h3{font-size:21px;letter-spacing:-.3px;margin-bottom:15px;overflow-wrap:anywhere}.ask{font-size:15px;line-height:1.95;color:#4e6058;margin-bottom:17px}.hint{font-size:13px;margin-bottom:18px}.hint summary{list-style:none;display:flex;align-items:center;justify-content:space-between;color:#a36539;background:#faf6ed;border-radius:6px;padding:8px 12px}.hint summary span{font-size:15px}.hint[open] summary span{transform:rotate(45deg)}.hint>div{padding:12px 12px 0;color:#776446}.answer{margin:0 -30px;background:#fbfcfa;border-top:1px solid #edf0e9}.answer>summary{list-style:none;padding:15px 30px;display:flex;align-items:center;justify-content:space-between;color:var(--teal);font-size:12px;font-weight:600;gap:16px}.answer summary::-webkit-details-marker,.hint summary::-webkit-details-marker,.guide summary::-webkit-details-marker{display:none}.chevron{font-size:17px;font-weight:400}.answer[open] .chevron{transform:rotate(180deg)}.answer-body{padding:4px 30px 26px;font-size:14px;color:#4d5c54;line-height:2.05}.answer-body h4{color:var(--ink);font-size:11px;font-weight:700;letter-spacing:1px;margin:20px 0 10px}.answer-body h4:first-child{margin-top:9px}.practice{margin-top:22px;padding-top:4px;border-top:1px dashed #d5dfd3}.practice h4{color:var(--teal)}.source{font-size:11px;line-height:1.9;color:#849080;margin-top:19px;overflow-wrap:anywhere}.source-chip{padding:2px 4px;background:#eef3eb;border-radius:3px;text-decoration:none;font:11px Consolas,monospace}.source-chip:hover{background:#dce8d8}code{font: .9em/1.7 Consolas,"Cascadia Code",monospace;background:#eef2ed;color:#22574a;padding:2px 5px;border-radius:4px;overflow-wrap:anywhere}pre{background:#edf1eb;border:1px solid #dce4d6;padding:20px;border-radius:7px;overflow:auto;line-height:1.9}pre code{padding:0;background:none}.appendix{border-top:1px solid var(--line);padding-top:30px;margin:40px 0}.appendix h2{font-size:24px;margin-bottom:22px}.prose{font-size:14px;line-height:2;color:#536158;overflow-wrap:anywhere}.prose p{margin-bottom:17px}.prose li{padding:3px 0}.prose ul,.prose ol{padding-left:22px}.prose h3{font-size:18px;margin:24px 0 14px}.prose strong{color:var(--ink)}.table-wrap{overflow:auto;margin:20px 0;border:1px solid #dbe3d6;border-radius:7px}table{border-collapse:collapse;width:100%;font-size:12px;text-align:left;line-height:1.8}th{background:#e9efe4;color:#40563f;font-weight:600}td,th{padding:12px 14px;border-bottom:1px solid #e0e7dc;vertical-align:top}tbody tr:last-child td{border:0}tbody tr:nth-child(even){background:#f4f7f1}td:first-child{white-space:nowrap;color:var(--teal)}td[id]{scroll-margin-top:130px}td:target{background:#f9dfb1}table a{overflow-wrap:anywhere}.empty{padding:50px 25px;text-align:center;color:var(--muted)}.empty h2{font-size:22px;margin-bottom:10px}.footer{border-top:1px solid var(--line);padding-top:24px;margin-top:40px;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#82917d}.footer a{text-decoration:none}.backdrop{display:none}
+@media(min-width:1450px){.content{padding-top:65px}.hero h1{font-size:54px}.sidebar{padding-top:34px}}
+@media(max-width:1150px){:root{--rail:235px}.sidebar{padding-left:13px;padding-right:13px}.content{padding:36px 30px}.toolbar{padding:14px 26px}.toolbar .secondary{padding:7px 10px}.edition{display:none}.chapter-heading h2{font-size:21px}.question{padding-left:24px;padding-right:24px}.answer{margin-left:-24px;margin-right:-24px}.answer>summary{padding-left:24px;padding-right:24px}.answer-body{padding-left:24px;padding-right:24px}}
+@media(max-width:850px){.sidebar{transform:translateX(-100%);transition:transform .18s;width:268px;z-index:10}.sidebar.show{transform:none}.shell{margin-left:0}.menu-btn{display:block;font-size:12px;padding:7px 11px}.toolbar{padding:12px 20px;gap:8px}.spacer{display:none}.search-box{max-width:none}.content{max-width:840px}.backdrop.show{display:block;position:fixed;inset:0;background:#17251d60;z-index:9}.chapter-heading h2{font-size:23px}}
+@media(max-width:560px){html{scroll-padding-top:132px}.toolbar{flex-wrap:wrap;padding:10px 15px;gap:8px}.search-box{flex:1;min-width:150px}.toolbar .secondary{font-size:11px;padding:5px 10px}.toolbar .print{margin-left:auto}.content{padding:27px 17px 45px}.hero{padding-bottom:28px}.hero h1{font-size:36px;line-height:1.3}.hero-top{font-size:9px}.hero-desc{font-size:13px}.hero-bottom{align-items:start;flex-direction:column;gap:24px}.metrics{gap:29px}.metric b{font-size:28px}.start-link{font-size:12px}.chapter-heading{gap:12px}.chapter-num{font-size:43px}.chapter-heading h2{font-size:19px}.chapter-range{display:none}.question{padding:20px 18px 0;border-radius:9px}.question h3{font-size:19px}.ask{font-size:14px}.answer{margin-left:-18px;margin-right:-18px}.answer>summary{padding:13px 18px}.answer-body{padding:4px 18px 23px;font-size:13px}.question-level{font-size:9px}.mastered{font-size:10px}.hint{font-size:12px}.guide{padding:17px}.guide>summary{font-size:13px}.guide>summary small{font-size:10px}.filter-row{gap:10px;flex-wrap:wrap}.appendix h2{font-size:21px}.prose{font-size:13px}.table-wrap{max-width:100%}th,td{padding:10px;min-width:55px}td:first-child{white-space:normal}.footer{flex-direction:column;gap:7px}.question{scroll-margin-top:140px}input[type=search]{font-size:16px}.nav-item,.nav-extra{min-height:38px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sidebar{transition:none}}
+@media print{@page{size:A4;margin:18mm 17mm}body{background:white;font:10pt/1.7 "Microsoft YaHei",sans-serif;color:#182820}.sidebar,.toolbar,.filter-row,.start-link,.mastered,.backdrop,.empty,.guide>summary,.footer{display:none!important}.shell{margin:0}.content{max-width:none;margin:0;padding:0}.hero{padding:0 0 16pt;margin:0 0 14pt}.hero h1{font-size:30pt}.hero-top{font-size:8pt}.hero-desc{font-size:10pt}.hero-bottom{margin-top:16pt}.metric b{font-size:22pt}.metric span{font-size:8pt}.guide{padding:0;background:none;margin:0 0 20pt}.guide .prose{padding:0}.guide .context{font-size:9pt}.chapter{break-before:page;margin:0}.chapter-heading{margin:0 0 17pt;break-after:avoid}.chapter-num{font-size:36pt}.chapter-heading h2{font-size:19pt}.question{box-shadow:none;margin:0 0 18pt;padding:14pt 0 0;border:none;border-top:1px solid #b9c9b8;border-radius:0;overflow:visible;break-inside:auto}.question h3{font-size:14pt;break-after:avoid}.question-top{break-after:avoid;margin-bottom:7pt}.question-level{background:none;padding:0;font-size:8pt}.ask{font-size:10pt;margin-bottom:10pt}.hint{font-size:9pt;margin:0 0 10pt}.hint summary{padding:0;background:none;font-weight:bold}.hint summary span{display:none}.hint>div{padding:4pt 0 0}.answer{background:none;border:0;margin:0}.answer>summary{display:none}.answer-body{padding:0;font-size:10pt;line-height:1.85}.answer-body h4{font-size:9pt;margin:10pt 0 5pt;break-after:avoid}.answer-body p{orphans:3;widows:3}.practice{margin-top:10pt;padding-top:0}.source{font-size:8pt}.source-chip,code{background:none}.appendix{break-before:page;margin:0;padding:0;border:0}.appendix h2{font-size:19pt;break-after:avoid}.prose{font-size:10pt}.table-wrap{overflow:visible;border-radius:0}table{font-size:9pt}tr{break-inside:avoid}thead{display:table-header-group}th,td{padding:7pt 8pt}pre{font-size:9pt;white-space:pre-wrap;break-inside:avoid}a{color:inherit}.chapter-range{display:block}.chapter[hidden],.appendix[hidden],.question[hidden],.hero[hidden],.guide[hidden]{display:block!important}}
+</style></head><body id="top"><a class="skip" href="#main">跳到讲义正文</a><div class="backdrop" id="backdrop"></div>
+<aside class="sidebar" id="sidebar"><a class="brand" href="#top"><span class="brand-mark">U</span><div><strong>UNITY FIELDNOTES</strong><small>ARPG · INTERVIEW GUIDE</small></div></a><div class="nav-label">学习路径 · 10 个阶段</div><nav aria-label="章节目录"><a href="#stage-1" class="nav-item"><span>01</span>从组件和生命周期开始</a><a href="#stage-2" class="nav-item"><span>02</span>把角色移动讲明白</a><a href="#stage-3" class="nav-item"><span>03</span>理解战斗时序</a><a href="#stage-4" class="nav-item"><span>04</span>理解契约和事件</a><a href="#stage-5" class="nav-item"><span>05</span>从背包到任务的一致性</a><a href="#stage-6" class="nav-item"><span>06</span>对话 UI 和暂停</a><a href="#stage-7" class="nav-item"><span>07</span>存档不仅是写 JSON</a><a href="#stage-8" class="nav-item"><span>08</span>场景切换和异步流程</a><a href="#stage-9" class="nav-item"><span>09</span>从 A 星原理追到实现细节</a><a href="#stage-10" class="nav-item"><span>10</span>像开发者一样排错和表达</a><div class="nav-label">练习与资料</div><a href="#section-11" class="nav-extra">六个值得优先准备的项目追问</a><a href="#section-12" class="nav-extra">十四次练习安排</a><a href="#section-13" class="nav-extra">模拟面试 A 基础与功能链路</a><a href="#section-14" class="nav-extra">模拟面试 B 系统异常与取舍</a><a href="#section-15" class="nav-extra">三个进阶实作题</a><a href="#section-16" class="nav-extra">错题记录模板</a><a href="#section-17" class="nav-extra">源码导航</a><a href="#section-18" class="nav-extra">面试前最后核对</a></nav><div class="progress-area"><div class="progress-label"><span>已掌握</span><b id="progressText">0 / 40</b></div><progress id="progress" max="40" value="0" aria-label="已掌握题目数"></progress><div class="progress-note" id="storageNote">勾选后自动保存在当前浏览器</div></div></aside>
+<div class="shell"><header class="toolbar"><button class="menu-btn" id="menu" aria-controls="sidebar" aria-expanded="false">目录</button><label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索题目、概念或方法名…" aria-label="搜索题目"></label><div class="spacer"></div><button class="secondary" id="expand">展开全部答案</button><button class="secondary print" id="print">打印 / 存为 PDF</button></header>
+<main class="content" id="main"><section class="hero"><div class="hero-top"><span class="dot"></span> 项目驱动的学习手册 <span class="edition">EDITION 01 / 2026.09</span></div><h1>Unity ARPG 项目<br><span>面试进阶训练手册</span></h1><p class="hero-desc">从读懂一行代码，到讲清一套系统。<br>沿着你自己的项目，练习原理、调用链与面试追问。</p><div class="hero-bottom"><div class="metrics"><div class="metric"><b>40</b><span>递进面试题</span></div><div class="metric"><b>10</b><span>学习阶段</span></div><div class="metric"><b>14</b><span>次练习安排</span></div></div><a class="start-link" href="#q01">从第一题开始 <span aria-hidden="true">↗</span></a></div></section>
+<details class="guide" id="readingGuide"><summary>怎么使用这份手册 <small>学习方法与项目说明 ＋</small></summary><div class="prose"><p>每题先只看“面试官问”，用自己的话回答 60～90 秒；卡住后看提示，再打开源码。最后核对参考答案，尝试回答追问。每次做 3～4 题即可，宁可把一个问题说清楚，也不要一次背完一章。</p>
+<p>每题按 0～3 分自评：0 分是不会；1 分是会说术语；2 分是能结合代码解释；3 分是能举反例、完成验证并解释结果。每阶段四题至少 10 分，且没有 0 分，再进入下一阶段。这是自学标准，不代表公司的录用标准。</p>
+<p>回答统一采用四步：<strong>做什么 → 代码怎么走 → 为什么这样做 → 还有什么边界</strong>。参考答案是表达骨架，请换成你自己的语言，不要把未完成的改进说成自己的成果。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>题号</th>
+<th>学习目标</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>一</td>
+<td>Q01～Q04</td>
+<td>理解组件和生命周期</td>
+</tr>
+<tr>
+<td>二</td>
+<td>Q05～Q08</td>
+<td>解释输入和角色移动</td>
+</tr>
+<tr>
+<td>三</td>
+<td>Q09～Q12</td>
+<td>解释战斗时序和伤害</td>
+</tr>
+<tr>
+<td>四</td>
+<td>Q13～Q16</td>
+<td>理解 C# 契约和事件</td>
+</tr>
+<tr>
+<td>五</td>
+<td>Q17～Q20</td>
+<td>解释背包交易和任务</td>
+</tr>
+<tr>
+<td>六</td>
+<td>Q21～Q24</td>
+<td>解释对话 UI 和暂停</td>
+</tr>
+<tr>
+<td>七</td>
+<td>Q25～Q28</td>
+<td>解释存档和恢复</td>
+</tr>
+<tr>
+<td>八</td>
+<td>Q29～Q32</td>
+<td>解释场景加载和资源</td>
+</tr>
+<tr>
+<td>九</td>
+<td>Q33～Q36</td>
+<td>分析 A* 实现和性能</td>
+</tr>
+<tr>
+<td>十</td>
+<td>Q37～Q40</td>
+<td>完成排错和项目表达</td>
+</tr>
+</tbody></table></div>
+</div><div class="context"><p>适合正在学习 Unity、已经做出功能，但还不擅长解释原理和处理追问的你。</p>
+<p>这份手册按“讲清一行代码 → 讲清一个功能 → 讲清系统协作 → 分析异常与改进”组织。你要练到能指出项目中的具体实现、解释设计原因，并用一个小实验验证自己的判断。重点是建立理解，不是背诵术语。</p>
+<p>代码核对日期：2026 年 9 月 21 日。当前 ProjectVersion.txt 记录为 2022.3.62t7、团结编辑器 1.8.5；包配置包含 Input System 1.14.3、Addressables 1.22.3。README 中的版本描述与当前配置不同，面试介绍以实际使用的环境为准。</p>
+<p>“当前实现”描述已经读到的代码；“建议改进”是练习方向，不代表项目已经实现。风险题是静态代码分析，是否在实际游玩中触发，需要按给出的步骤验证。文档中的代码练习不会自动修改游戏。</p>
+</div></details>
+<div class="filter-row"><label><input id="pending" type="checkbox">只看未掌握</label><button id="clear" hidden>清除筛选</button><span id="results" role="status" aria-live="polite">共 40 道题 · 先回答，再看答案</span></div>
+<div id="chapters"><section class="chapter" id="stage-1" data-stage="1"><header class="chapter-heading"><span class="chapter-num">01</span><div><span class="eyebrow">STAGE 01 / 10</span><h2>从组件和生命周期开始</h2></div><span class="chapter-range">Q01—Q04</span></header><article class="question" id="q01" data-search="角色为什么需要多个组件 **面试官问：** 你的玩家有 Transform、Rigidbody2D、Collider2D 和 PlayerMovement。它们分别负责什么？为什么一个脚本不能包办？
+
+**先想一想：** 位置、物理模拟、碰撞形状、玩法规则，是不是同一件事？
+
+**参考答案：** Transform 表达位置、旋转和缩放；Rigidbody2D 让对象参与二维刚体模拟；Collider2D 提供碰撞形状；PlayerMovement 根据输入和状态决定速度及动画。脚本调用这些组件提供的能力。分开以后，可以独立调碰撞体、替换外观或修改移动规则，不必自己重写物理引擎。
+
+**继续追问：** 有 Collider2D 就一定收到 OnCollisionEnter2D 吗？答题要点：还需要检查刚体类型、碰撞层矩阵、Trigger 设置和碰撞回调条件，不能只看一个组件是否存在。
+
+**动手验证：** 在玩家 Inspector 中定位四类组件，标出哪些位于根节点、哪些位于子节点。先记原值，再临时切换碰撞体的 Is Trigger，观察回调区别。
+
+源码定位：PlayerMovement、Arrow，见文末 S01、S04。">
+        <div class="question-top"><span class="q-number">Q01</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="01"><span>已掌握</span></label></div>
+        <h3>角色为什么需要多个组件</h3><div class="ask"><p>你的玩家有 Transform、Rigidbody2D、Collider2D 和 PlayerMovement。它们分别负责什么？为什么一个脚本不能包办？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>位置、物理模拟、碰撞形状、玩法规则，是不是同一件事？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>Transform 表达位置、旋转和缩放；Rigidbody2D 让对象参与二维刚体模拟；Collider2D 提供碰撞形状；PlayerMovement 根据输入和状态决定速度及动画。脚本调用这些组件提供的能力。分开以后，可以独立调碰撞体、替换外观或修改移动规则，不必自己重写物理引擎。</p>
+<h4>面试官继续追问</h4><p>有 Collider2D 就一定收到 OnCollisionEnter2D 吗？答题要点：还需要检查刚体类型、碰撞层矩阵、Trigger 设置和碰撞回调条件，不能只看一个组件是否存在。</p>
+<div class="practice"><h4>动手验证</h4><p>在玩家 Inspector 中定位四类组件，标出哪些位于根节点、哪些位于子节点。先记原值，再临时切换碰撞体的 Is Trigger，观察回调区别。</p>
+</div><div class="source"><p>源码定位：PlayerMovement、Arrow，见文末 <a href="#source-01" class="source-chip">S01</a>、<a href="#source-04" class="source-chip">S04</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q02" data-search="private 字段为什么能在 Inspector 中配置 **面试官问：** `[SerializeField] private Rigidbody2D rb;` 为什么既是 private，又能拖引用？和 public 有什么区别？
+
+**先想一想：** C# 访问权限与 Unity 序列化是两套规则。
+
+**参考答案：** private 限制其他类直接访问这个字段；SerializeField 告诉 Unity 对满足序列化规则的字段进行序列化，并通常在 Inspector 中显示。这样既能配置依赖，又不必开放任意赋值权限。public 字段不等于所有类型都能被 Unity 序列化；普通 C# 属性也不能简单等同于序列化字段。
+
+**继续追问：** 拖错对象和完全没拖，哪个更容易发现？答题要点：空引用可能直接报错，错引用可能表现为“另一个对象动了”。需要验证引用的身份，而不只是加 null 判断。
+
+**动手验证：** 临时清空 rb，观察实际报错位置；再通过 Inspector 恢复。解释为什么 GetComponent 适合同对象依赖，而 Inspector 引用更适合明确的跨节点依赖。
+
+源码定位：PlayerMovement 的序列化字段，S01。">
+        <div class="question-top"><span class="q-number">Q02</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="02"><span>已掌握</span></label></div>
+        <h3>private 字段为什么能在 Inspector 中配置</h3><div class="ask"><p><code>[SerializeField] private Rigidbody2D rb;</code> 为什么既是 private，又能拖引用？和 public 有什么区别？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>C# 访问权限与 Unity 序列化是两套规则。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>private 限制其他类直接访问这个字段；SerializeField 告诉 Unity 对满足序列化规则的字段进行序列化，并通常在 Inspector 中显示。这样既能配置依赖，又不必开放任意赋值权限。public 字段不等于所有类型都能被 Unity 序列化；普通 C# 属性也不能简单等同于序列化字段。</p>
+<h4>面试官继续追问</h4><p>拖错对象和完全没拖，哪个更容易发现？答题要点：空引用可能直接报错，错引用可能表现为“另一个对象动了”。需要验证引用的身份，而不只是加 null 判断。</p>
+<div class="practice"><h4>动手验证</h4><p>临时清空 rb，观察实际报错位置；再通过 Inspector 恢复。解释为什么 GetComponent 适合同对象依赖，而 Inspector 引用更适合明确的跨节点依赖。</p>
+</div><div class="source"><p>源码定位：PlayerMovement 的序列化字段，<a href="#source-01" class="source-chip">S01</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q03" data-search="Awake OnEnable Start 应该怎么分工 **面试官问：** 如果把事件订阅放在 Start，注销放在 OnDisable，重新启用后还收得到事件吗？
+
+**先想一想：** 哪个方法只执行一次，哪个方法会随启用反复执行？
+
+**参考答案：** 对正常启用的组件，Awake 用于实例初始化，OnEnable 在启用时执行，Start 在首次 Update 前执行一次。若 Start 订阅、OnDisable 注销，重新启用不会再执行 Start，订阅就丢了。本项目 PlayerMovement 在 OnEnable 订阅，在 OnDisable 注销，适合“仅启用期间监听”的需求。跨对象初始化顺序不能只靠猜测。
+
+**继续追问：** 在其他对象的 OnEnable 里访问某单例，一定安全吗？答题要点：看实例是否已创建、激活及初始化；执行顺序属性不能替代明确的依赖准备过程。
+
+**动手验证：** 给五个生命周期方法临时加日志，依次启用、禁用组件、禁用物体、重新启用。对照 Unity 的[生命周期文档](https://docs.unity3d.com/2022.3/Documentation/Manual/ExecutionOrder.html)。
+
+源码定位：PlayerMovement、YSingleton，S01、S05。">
+        <div class="question-top"><span class="q-number">Q03</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="03"><span>已掌握</span></label></div>
+        <h3>Awake OnEnable Start 应该怎么分工</h3><div class="ask"><p>如果把事件订阅放在 Start，注销放在 OnDisable，重新启用后还收得到事件吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>哪个方法只执行一次，哪个方法会随启用反复执行？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>对正常启用的组件，Awake 用于实例初始化，OnEnable 在启用时执行，Start 在首次 Update 前执行一次。若 Start 订阅、OnDisable 注销，重新启用不会再执行 Start，订阅就丢了。本项目 PlayerMovement 在 OnEnable 订阅，在 OnDisable 注销，适合“仅启用期间监听”的需求。跨对象初始化顺序不能只靠猜测。</p>
+<h4>面试官继续追问</h4><p>在其他对象的 OnEnable 里访问某单例，一定安全吗？答题要点：看实例是否已创建、激活及初始化；执行顺序属性不能替代明确的依赖准备过程。</p>
+<div class="practice"><h4>动手验证</h4><p>给五个生命周期方法临时加日志，依次启用、禁用组件、禁用物体、重新启用。对照 Unity 的<a href="https://docs.unity3d.com/2022.3/Documentation/Manual/ExecutionOrder.html">生命周期文档</a>。</p>
+</div><div class="source"><p>源码定位：PlayerMovement、YSingleton，<a href="#source-01" class="source-chip">S01</a>、<a href="#source-05" class="source-chip">S05</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q04" data-search="单例是否等于跨场景常驻 **面试官问：** YSingleton&lt;T&gt; 让 StatsManager.Instance 能随时访问，它是不是自动不会随场景销毁？
+
+**先想一想：** 全局访问入口与对象寿命分别由谁控制？
+
+**参考答案：** 当前 YSingleton 在 Awake 注册实例并销毁重复对象，在 OnDestroy 清空自己的静态引用。它没有调用 DontDestroyOnLoad。项目中的常驻需求依赖场景组织和对象所在场景是否被卸载，不能归功于 static。YSingleton&lt;StatsManager&gt; 和 YSingleton&lt;DataManager&gt; 是不同的封闭泛型类型，静态字段各自独立。
+
+**继续追问：** 子类重写 Awake 却不调用基类，会怎样？答题要点：可能跳过单例注册，因此项目提供 OnSingletonInitialized 作为额外初始化入口。单例也会带来隐藏依赖和测试替换困难。
+
+**动手验证：** 找到基类真正执行的 Destroy 和 OnDestroy；解释为何销毁一个重复实例时，不应把合法实例的 Instance 清空。
+
+源码定位：YSingleton，S05。">
+        <div class="question-top"><span class="q-number">Q04</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="04"><span>已掌握</span></label></div>
+        <h3>单例是否等于跨场景常驻</h3><div class="ask"><p>YSingleton&lt;T&gt; 让 StatsManager.Instance 能随时访问，它是不是自动不会随场景销毁？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>全局访问入口与对象寿命分别由谁控制？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 YSingleton 在 Awake 注册实例并销毁重复对象，在 OnDestroy 清空自己的静态引用。它没有调用 DontDestroyOnLoad。项目中的常驻需求依赖场景组织和对象所在场景是否被卸载，不能归功于 static。YSingleton&lt;StatsManager&gt; 和 YSingleton&lt;DataManager&gt; 是不同的封闭泛型类型，静态字段各自独立。</p>
+<h4>面试官继续追问</h4><p>子类重写 Awake 却不调用基类，会怎样？答题要点：可能跳过单例注册，因此项目提供 OnSingletonInitialized 作为额外初始化入口。单例也会带来隐藏依赖和测试替换困难。</p>
+<div class="practice"><h4>动手验证</h4><p>找到基类真正执行的 Destroy 和 OnDestroy；解释为何销毁一个重复实例时，不应把合法实例的 Instance 清空。</p>
+</div><div class="source"><p>源码定位：YSingleton，<a href="#source-05" class="source-chip">S05</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-2" data-stage="2"><header class="chapter-heading"><span class="chapter-num">02</span><div><span class="eyebrow">STAGE 02 / 10</span><h2>把角色移动讲明白</h2></div><span class="chapter-range">Q05—Q08</span></header><article class="question" id="q05" data-search="速度赋值为什么不乘 deltaTime **面试官问：** `rb.velocity = new Vector2(horizontal, vertical) * speed;` 中输入为 (1, 0)，speed 为 5，会发生什么？要再乘 deltaTime 吗？
+
+**先想一想：** 速度的单位和位移的单位分别是什么？
+
+**参考答案：** 代码把刚体线速度设为 (5, 0)，即向世界坐标正 X 方向每秒 5 个单位。无阻挡、无其他影响且持续维持该速度时，一秒约移动 5 个单位。速度赋值不再乘 deltaTime；若自己累计位置，才通常用速度乘经过的时间得到位移。碰撞、阻尼和其他脚本仍可能影响实际运动。
+
+**继续追问：** 如果改为 `transform.position += direction * speed` 呢？答题要点：每帧固定增加位移会受帧率影响，而且直接改 Transform 与刚体模拟需要协调。
+
+**动手验证：** 分别记录 30 FPS 和 120 FPS 下约一秒的位移，再解释差异来源。参考 [Rigidbody2D.velocity](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Rigidbody2D-velocity.html)。
+
+源码定位：PlayerMovement.SetMovement，S01。">
+        <div class="question-top"><span class="q-number">Q05</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="05"><span>已掌握</span></label></div>
+        <h3>速度赋值为什么不乘 deltaTime</h3><div class="ask"><p><code>rb.velocity = new Vector2(horizontal, vertical) * speed;</code> 中输入为 (1, 0)，speed 为 5，会发生什么？要再乘 deltaTime 吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>速度的单位和位移的单位分别是什么？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>代码把刚体线速度设为 (5, 0)，即向世界坐标正 X 方向每秒 5 个单位。无阻挡、无其他影响且持续维持该速度时，一秒约移动 5 个单位。速度赋值不再乘 deltaTime；若自己累计位置，才通常用速度乘经过的时间得到位移。碰撞、阻尼和其他脚本仍可能影响实际运动。</p>
+<h4>面试官继续追问</h4><p>如果改为 <code>transform.position += direction * speed</code> 呢？答题要点：每帧固定增加位移会受帧率影响，而且直接改 Transform 与刚体模拟需要协调。</p>
+<div class="practice"><h4>动手验证</h4><p>分别记录 30 FPS 和 120 FPS 下约一秒的位移，再解释差异来源。参考 <a href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Rigidbody2D-velocity.html">Rigidbody2D.velocity</a>。</p>
+</div><div class="source"><p>源码定位：PlayerMovement.SetMovement，<a href="#source-01" class="source-chip">S01</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q06" data-search="为什么斜向移动不一定更快 **面试官问：** 同时按 W 和 D，速度一定是单方向的 √2 倍吗？
+
+**先想一想：** 先确认传入的是 (1, 1)，还是已经归一化后的向量。
+
+**参考答案：** 只有输入向量为 (1, 1)、且后面直接乘速度等条件成立时，长度才会放大到 √2。当前 GameInput 的 Move 使用未显式设置 mode 的 2DVector，按 Input System 默认 DigitalNormalized 模式，斜向输入会归一化。Joystick 也会把长度大于 1 的输入归一化。因此不能只看到 SetMovement 没写 normalized 就认定当前游戏有斜向加速。
+
+**继续追问：** 为什么不能把所有摇杆输入都 normalized？答题要点：小幅度摇杆输入会被放大成满速；ClampMagnitude(input, 1) 能保留小于 1 的力度。
+
+**动手验证：** 输出实际输入的 x、y 和 magnitude，分别测试键盘斜向、摇杆半推和满推。核对 [2D Vector Composite 的模式说明](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.14/manual/ActionBindings.html)。
+
+源码定位：PlayerMovement、Joystick、GameInput.inputactions，S01、S06。">
+        <div class="question-top"><span class="q-number">Q06</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="06"><span>已掌握</span></label></div>
+        <h3>为什么斜向移动不一定更快</h3><div class="ask"><p>同时按 W 和 D，速度一定是单方向的 √2 倍吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>先确认传入的是 (1, 1)，还是已经归一化后的向量。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>只有输入向量为 (1, 1)、且后面直接乘速度等条件成立时，长度才会放大到 √2。当前 GameInput 的 Move 使用未显式设置 mode 的 2DVector，按 Input System 默认 DigitalNormalized 模式，斜向输入会归一化。Joystick 也会把长度大于 1 的输入归一化。因此不能只看到 SetMovement 没写 normalized 就认定当前游戏有斜向加速。</p>
+<h4>面试官继续追问</h4><p>为什么不能把所有摇杆输入都 normalized？答题要点：小幅度摇杆输入会被放大成满速；ClampMagnitude(input, 1) 能保留小于 1 的力度。</p>
+<div class="practice"><h4>动手验证</h4><p>输出实际输入的 x、y 和 magnitude，分别测试键盘斜向、摇杆半推和满推。核对 <a href="https://docs.unity3d.com/Packages/com.unity.inputsystem@1.14/manual/ActionBindings.html">2D Vector Composite 的模式说明</a>。</p>
+</div><div class="source"><p>源码定位：PlayerMovement、Joystick、GameInput.inputactions，<a href="#source-01" class="source-chip">S01</a>、<a href="#source-06" class="source-chip">S06</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q07" data-search="Update 和 FixedUpdate 怎么配合 **面试官问：** 你目前在 Update 调用移动逻辑并写刚体速度，这样一定错吗？你会怎么整理？
+
+**先想一想：** 一帧渲染中，物理步可能发生几次？按键瞬间与持续移动是否一样？
+
+**参考答案：** 不能说一定不能工作。当前代码在 Update 中读取输入、转换状态并设置速度；帧率与物理步不同，会影响输入和物理更新的时序。建议在符合 Input System 更新模式的阶段采集输入，缓存持续方向和一次性动作请求，再在 FixedUpdate 统一应用刚体运动。状态机、击退和动作锁也必须统一，不能只搬一行速度代码。
+
+**继续追问：** 把 WasPressedThisFrame 直接搬进 FixedUpdate 就好吗？答题要点：必须匹配输入更新模式；可缓存按下请求并只消费一次，避免遗漏或重复处理。
+
+**动手验证：** 在低帧率和不同 fixedDeltaTime 下短按攻击键，记录输入请求次数、消费次数及动画次数。对照[执行顺序说明](https://docs.unity3d.com/2022.3/Documentation/Manual/ExecutionOrder.html)。
+
+源码定位：PlayerMovement.Update、MovementSM，S01。">
+        <div class="question-top"><span class="q-number">Q07</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="07"><span>已掌握</span></label></div>
+        <h3>Update 和 FixedUpdate 怎么配合</h3><div class="ask"><p>你目前在 Update 调用移动逻辑并写刚体速度，这样一定错吗？你会怎么整理？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>一帧渲染中，物理步可能发生几次？按键瞬间与持续移动是否一样？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>不能说一定不能工作。当前代码在 Update 中读取输入、转换状态并设置速度；帧率与物理步不同，会影响输入和物理更新的时序。建议在符合 Input System 更新模式的阶段采集输入，缓存持续方向和一次性动作请求，再在 FixedUpdate 统一应用刚体运动。状态机、击退和动作锁也必须统一，不能只搬一行速度代码。</p>
+<h4>面试官继续追问</h4><p>把 WasPressedThisFrame 直接搬进 FixedUpdate 就好吗？答题要点：必须匹配输入更新模式；可缓存按下请求并只消费一次，避免遗漏或重复处理。</p>
+<div class="practice"><h4>动手验证</h4><p>在低帧率和不同 fixedDeltaTime 下短按攻击键，记录输入请求次数、消费次数及动画次数。对照<a href="https://docs.unity3d.com/2022.3/Documentation/Manual/ExecutionOrder.html">执行顺序说明</a>。</p>
+</div><div class="source"><p>源码定位：PlayerMovement.Update、MovementSM，<a href="#source-01" class="source-chip">S01</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q08" data-search="击退为什么会受到移动速度影响 **面试官问：** 同一个敌人推你，升级移动速度后击退也变强了。你先查哪里？
+
+**先想一想：** 击退函数已经算出了速度，接收它的函数是否还会再乘一次速度？
+
+**参考答案：** 当前 KnockBack 计算 `direction * force`，然后把它交给 SetMovement。SetMovement 又乘 GetSpeed，所以最终赋值为 direction × force × 移动速度。若 force 的设计含义就是击退速度，这里有额外缩放。建议把普通移动的“输入转速度”和底层“应用速度”分开，明确参数单位；如果想用冲量，再单独考虑 AddForce 与质量。
+
+**继续追问：** 攻击时受击，为什么可能无法及时恢复？答题要点：同时跟踪 playerState、canBeInterrupted、动作结束事件与击退协程，找哪个写入最后生效。
+
+**动手验证：** 保持 force 不变，把移动速度改为原来的两倍，记录 KnockBack 后立即赋给 rb.velocity 的数值。先验证放大关系，再设计修正。
+
+源码定位：PlayerMovement.KnockBack、SetMovement、KnockBackCounter，S01。">
+        <div class="question-top"><span class="q-number">Q08</span><span class="question-level">基础理解</span><label class="mastered"><input type="checkbox" data-q="08"><span>已掌握</span></label></div>
+        <h3>击退为什么会受到移动速度影响</h3><div class="ask"><p>同一个敌人推你，升级移动速度后击退也变强了。你先查哪里？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>击退函数已经算出了速度，接收它的函数是否还会再乘一次速度？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 KnockBack 计算 <code>direction * force</code>，然后把它交给 SetMovement。SetMovement 又乘 GetSpeed，所以最终赋值为 direction × force × 移动速度。若 force 的设计含义就是击退速度，这里有额外缩放。建议把普通移动的“输入转速度”和底层“应用速度”分开，明确参数单位；如果想用冲量，再单独考虑 AddForce 与质量。</p>
+<h4>面试官继续追问</h4><p>攻击时受击，为什么可能无法及时恢复？答题要点：同时跟踪 playerState、canBeInterrupted、动作结束事件与击退协程，找哪个写入最后生效。</p>
+<div class="practice"><h4>动手验证</h4><p>保持 force 不变，把移动速度改为原来的两倍，记录 KnockBack 后立即赋给 rb.velocity 的数值。先验证放大关系，再设计修正。</p>
+</div><div class="source"><p>源码定位：PlayerMovement.KnockBack、SetMovement、KnockBackCounter，<a href="#source-01" class="source-chip">S01</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-3" data-stage="3"><header class="chapter-heading"><span class="chapter-num">03</span><div><span class="eyebrow">STAGE 03 / 10</span><h2>理解战斗时序</h2></div><span class="chapter-range">Q09—Q12</span></header><article class="question" id="q09" data-search="一次挥剑从按键到伤害经过哪些步骤 **面试官问：** 按下 J 后，敌人为什么会在挥剑时受伤，而不是按键瞬间受伤？
+
+**先想一想：** 输入决定开始动作，谁决定命中的时刻？
+
+**参考答案：** MovementSM 检查近战输入、武器激活状态和冷却，切到 Attacking；攻击状态停止移动并锁定打断。动画事件经 PlayerAnimationEventRelay 转发给 PlayerCombat.DealDamage，在攻击点周围查询碰撞体，再调用 IDamageable.TakeDamage。动作结束时通过 SO 事件回到 Idle 并重置冷却。具体命中帧取决于动画资源中的事件配置。
+
+**继续追问：** 修改动画时长后伤害会自动正确吗？答题要点：还要检查命中事件位置、过渡是否跳过事件，以及同一事件是否被重复调用。
+
+**动手验证：** 在 Animator、Animation 窗口和三个回调处对照时间顺序，画出“按键 → 攻击状态 → 命中 → 结束”四个时间点。
+
+源码定位：PlayerMovement、PlayerCombat、PlayerAnimationEventRelay，S01～S03。">
+        <div class="question-top"><span class="q-number">Q09</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="09"><span>已掌握</span></label></div>
+        <h3>一次挥剑从按键到伤害经过哪些步骤</h3><div class="ask"><p>按下 J 后，敌人为什么会在挥剑时受伤，而不是按键瞬间受伤？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>输入决定开始动作，谁决定命中的时刻？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>MovementSM 检查近战输入、武器激活状态和冷却，切到 Attacking；攻击状态停止移动并锁定打断。动画事件经 PlayerAnimationEventRelay 转发给 PlayerCombat.DealDamage，在攻击点周围查询碰撞体，再调用 IDamageable.TakeDamage。动作结束时通过 SO 事件回到 Idle 并重置冷却。具体命中帧取决于动画资源中的事件配置。</p>
+<h4>面试官继续追问</h4><p>修改动画时长后伤害会自动正确吗？答题要点：还要检查命中事件位置、过渡是否跳过事件，以及同一事件是否被重复调用。</p>
+<div class="practice"><h4>动手验证</h4><p>在 Animator、Animation 窗口和三个回调处对照时间顺序，画出“按键 → 攻击状态 → 命中 → 结束”四个时间点。</p>
+</div><div class="source"><p>源码定位：PlayerMovement、PlayerCombat、PlayerAnimationEventRelay，<a href="#source-01" class="source-chip">S01</a>～<a href="#source-03" class="source-chip">S03</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q10" data-search="动画结束事件丢失会怎样 **面试官问：** 玩家挥剑后再也不能移动，你会优先怀疑什么？
+
+**先想一想：** 哪行锁住了输入，哪条路径负责解锁？
+
+**参考答案：** HandleAttackingState 把 canBeInterrupted 设为 false，Update 随后会提前返回。正常恢复依赖 FinishCombat 广播、OnActionFinished 接收。如果动画被打断、事件函数名称不匹配、Relay 未转发或两端拖了不同 SO，解锁路径可能不执行。应记录动作状态和事件链，逐段定位，不能只在 Update 中强行解锁。
+
+**继续追问：** 加一个固定 0.5 秒计时器兜底就够了吗？答题要点：动作速度、武器切换和取消会改变时序；更稳妥的方向是统一动作退出清理，并用动作编号拒绝旧回调。
+
+**动手验证：** 在临时动画副本里移除结束事件，验证锁死条件；恢复后模拟中途切换装备，检查旧动作回调是否影响新动作。
+
+源码定位：PlayerMovement.OnActionFinished、PlayerCombat.FinishCombat、Relay，S01～S03。">
+        <div class="question-top"><span class="q-number">Q10</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="10"><span>已掌握</span></label></div>
+        <h3>动画结束事件丢失会怎样</h3><div class="ask"><p>玩家挥剑后再也不能移动，你会优先怀疑什么？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>哪行锁住了输入，哪条路径负责解锁？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>HandleAttackingState 把 canBeInterrupted 设为 false，Update 随后会提前返回。正常恢复依赖 FinishCombat 广播、OnActionFinished 接收。如果动画被打断、事件函数名称不匹配、Relay 未转发或两端拖了不同 SO，解锁路径可能不执行。应记录动作状态和事件链，逐段定位，不能只在 Update 中强行解锁。</p>
+<h4>面试官继续追问</h4><p>加一个固定 0.5 秒计时器兜底就够了吗？答题要点：动作速度、武器切换和取消会改变时序；更稳妥的方向是统一动作退出清理，并用动作编号拒绝旧回调。</p>
+<div class="practice"><h4>动手验证</h4><p>在临时动画副本里移除结束事件，验证锁死条件；恢复后模拟中途切换装备，检查旧动作回调是否影响新动作。</p>
+</div><div class="source"><p>源码定位：PlayerMovement.OnActionFinished、PlayerCombat.FinishCombat、Relay，<a href="#source-01" class="source-chip">S01</a>～<a href="#source-03" class="source-chip">S03</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q11" data-search="为什么一个敌人可能被一次挥剑伤害两次 **面试官问：** 敌人有身体和头部两个碰撞体，OverlapCircleAll 返回的是什么？
+
+**先想一想：** 一个 Collider2D 和一个逻辑受伤对象是一一对应的吗？
+
+**参考答案：** 查询返回碰撞体数组。当前代码对每个结果 GetComponent&lt;IDamageable&gt; 并调用伤害。如果多个碰撞体都能找到同一个逻辑目标，可能重复伤害；若伤害组件只在父节点，当前 GetComponent 又可能找不到。建议先定义受击盒如何关联目标，再按目标身份做本次攻击去重，明确命中窗口内允许几次伤害。
+
+**继续追问：** 每次查询创建 HashSet 就没有代价了吗？答题要点：去重也有分配和维护成本，可以按攻击周期复用集合；先正确，再测频率和开销。
+
+**动手验证：** 给一个敌人添加子碰撞体，分别测试伤害组件在根节点和子节点的情况；记录碰撞体数量与实际扣血次数。
+
+源码定位：PlayerCombat.DealDamage，S02。">
+        <div class="question-top"><span class="q-number">Q11</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="11"><span>已掌握</span></label></div>
+        <h3>为什么一个敌人可能被一次挥剑伤害两次</h3><div class="ask"><p>敌人有身体和头部两个碰撞体，OverlapCircleAll 返回的是什么？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>一个 Collider2D 和一个逻辑受伤对象是一一对应的吗？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>查询返回碰撞体数组。当前代码对每个结果 GetComponent&lt;IDamageable&gt; 并调用伤害。如果多个碰撞体都能找到同一个逻辑目标，可能重复伤害；若伤害组件只在父节点，当前 GetComponent 又可能找不到。建议先定义受击盒如何关联目标，再按目标身份做本次攻击去重，明确命中窗口内允许几次伤害。</p>
+<h4>面试官继续追问</h4><p>每次查询创建 HashSet 就没有代价了吗？答题要点：去重也有分配和维护成本，可以按攻击周期复用集合；先正确，再测频率和开销。</p>
+<div class="practice"><h4>动手验证</h4><p>给一个敌人添加子碰撞体，分别测试伤害组件在根节点和子节点的情况；记录碰撞体数量与实际扣血次数。</p>
+</div><div class="source"><p>源码定位：PlayerCombat.DealDamage，<a href="#source-02" class="source-chip">S02</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q12" data-search="弓箭如何改成对象池 **面试官问：** 当前每次 Shoot 都 Instantiate，Arrow.Start 中延迟 Destroy。箭很多时，你会怎么改？
+
+**先想一想：** 复用后的箭保留了上一次的哪些状态？
+
+**参考答案：** 当前箭的发射、碰撞附着和销毁是一条单次生命周期。建议改为获取箭时显式初始化，命中或超时后归还；重置父节点、贴图、刚体类型、速度、碰撞状态、方向和本次伤害。寿命倒计时必须每次发射重新开始，不能依赖只执行一次的 Start。旧的延迟销毁或协程必须取消，避免回收后再次借出的箭被旧任务处理。
+
+**继续追问：** 池容量设得越大越好吗？答题要点：池会保留内存；根据峰值并发数、预热成本和超额策略决定。当前项目尚未实现箭池。
+
+**动手验证：** 列出 Arrow.AttachToTarget 修改的每个字段，把它们变成“借出时重置清单”。以后实现时连续复用同一支箭三次检查残留。
+
+源码定位：PlayerBow.Shoot、Arrow，S04。性能背景见 Unity 的[分配与复用建议](https://docs.unity3d.com/2022.3/Documentation/Manual/performance-garbage-collection-best-practices.html)。">
+        <div class="question-top"><span class="q-number">Q12</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="12"><span>已掌握</span></label></div>
+        <h3>弓箭如何改成对象池</h3><div class="ask"><p>当前每次 Shoot 都 Instantiate，Arrow.Start 中延迟 Destroy。箭很多时，你会怎么改？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>复用后的箭保留了上一次的哪些状态？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前箭的发射、碰撞附着和销毁是一条单次生命周期。建议改为获取箭时显式初始化，命中或超时后归还；重置父节点、贴图、刚体类型、速度、碰撞状态、方向和本次伤害。寿命倒计时必须每次发射重新开始，不能依赖只执行一次的 Start。旧的延迟销毁或协程必须取消，避免回收后再次借出的箭被旧任务处理。</p>
+<h4>面试官继续追问</h4><p>池容量设得越大越好吗？答题要点：池会保留内存；根据峰值并发数、预热成本和超额策略决定。当前项目尚未实现箭池。</p>
+<div class="practice"><h4>动手验证</h4><p>列出 Arrow.AttachToTarget 修改的每个字段，把它们变成“借出时重置清单”。以后实现时连续复用同一支箭三次检查残留。</p>
+</div><div class="source"><p>源码定位：PlayerBow.Shoot、Arrow，<a href="#source-04" class="source-chip">S04</a>。性能背景见 Unity 的<a href="https://docs.unity3d.com/2022.3/Documentation/Manual/performance-garbage-collection-best-practices.html">分配与复用建议</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-4" data-stage="4"><header class="chapter-heading"><span class="chapter-num">04</span><div><span class="eyebrow">STAGE 04 / 10</span><h2>理解契约和事件</h2></div><span class="chapter-range">Q13—Q16</span></header><article class="question" id="q13" data-search="为什么用 IDamageable 和 ISaveable **面试官问：** 为什么不直接 GetComponent&lt;EnemyHealth&gt;，为什么存档不把所有类型写成一串 if？
+
+**先想一想：** 调用方真正需要知道对象的类型，还是只需要知道它能做什么？
+
+**参考答案：** IDamageable 描述“能承受伤害”的能力，ISaveable 描述“能写入和恢复 Data”的能力。调用方依赖契约，敌人、可破坏物等可以各自实现逻辑。抽象类适合共享基类行为，如 YSingleton；接口适合让不同类型提供同一能力。本项目 ISaveable 还有默认方法实现，不能机械回答“接口绝对不能有方法体”。
+
+**继续追问：** 用了接口就完全解耦了吗？答题要点：ISaveable 默认注册方法仍直接访问 DataManager.Instance，接口减少了一部分类型依赖，没有消除所有依赖。
+
+**动手验证：** 纸上设计一个可受伤木箱，列出它需要实现的成员；解释为什么 PlayerCombat 理论上无需新增木箱专用分支。
+
+源码定位：IDamageable、ISaveable、YSingleton，S05、S07。">
+        <div class="question-top"><span class="q-number">Q13</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="13"><span>已掌握</span></label></div>
+        <h3>为什么用 IDamageable 和 ISaveable</h3><div class="ask"><p>为什么不直接 GetComponent&lt;EnemyHealth&gt;，为什么存档不把所有类型写成一串 if？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>调用方真正需要知道对象的类型，还是只需要知道它能做什么？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>IDamageable 描述“能承受伤害”的能力，ISaveable 描述“能写入和恢复 Data”的能力。调用方依赖契约，敌人、可破坏物等可以各自实现逻辑。抽象类适合共享基类行为，如 YSingleton；接口适合让不同类型提供同一能力。本项目 ISaveable 还有默认方法实现，不能机械回答“接口绝对不能有方法体”。</p>
+<h4>面试官继续追问</h4><p>用了接口就完全解耦了吗？答题要点：ISaveable 默认注册方法仍直接访问 DataManager.Instance，接口减少了一部分类型依赖，没有消除所有依赖。</p>
+<div class="practice"><h4>动手验证</h4><p>纸上设计一个可受伤木箱，列出它需要实现的成员；解释为什么 PlayerCombat 理论上无需新增木箱专用分支。</p>
+</div><div class="source"><p>源码定位：IDamageable、ISaveable、YSingleton，<a href="#source-05" class="source-chip">S05</a>、<a href="#source-07" class="source-chip">S07</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q14" data-search="SO 配置为什么与运行时状态分开 **面试官问：** QuestSO 已经有 currentAmount 字段，为什么 QuestManager 还用字典存进度？
+
+**先想一想：** 两个系统引用同一个 SO 时，修改的是几份数据？
+
+**参考答案：** SO 资产常被共享，QuestSO 适合存任务目标和奖励等配置；不同存档、不同角色的进度应由独立运行时数据表示。当前 QuestManager 用 QuestProgressData 保存状态和目标进度，QuestObjective.currentAmount 是遗留字段。不要把“SO 可以承载数据”误解为“运行时修改会自动变成玩家磁盘存档”。
+
+**继续追问：** SO 一定永不销毁吗？答题要点：SO 也有生命周期和引用管理，不能把资产、运行时创建实例和内存常驻混成一个概念。
+
+**动手验证：** 找两个引用同一 QuestSO 的位置，说明如果直接修改资产上的目标数量会影响谁。参考 [ScriptableObject 官方说明](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/ScriptableObject.html)。
+
+源码定位：QuestSO、QuestManager.QuestProgressData，S08。">
+        <div class="question-top"><span class="q-number">Q14</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="14"><span>已掌握</span></label></div>
+        <h3>SO 配置为什么与运行时状态分开</h3><div class="ask"><p>QuestSO 已经有 currentAmount 字段，为什么 QuestManager 还用字典存进度？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>两个系统引用同一个 SO 时，修改的是几份数据？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>SO 资产常被共享，QuestSO 适合存任务目标和奖励等配置；不同存档、不同角色的进度应由独立运行时数据表示。当前 QuestManager 用 QuestProgressData 保存状态和目标进度，QuestObjective.currentAmount 是遗留字段。不要把“SO 可以承载数据”误解为“运行时修改会自动变成玩家磁盘存档”。</p>
+<h4>面试官继续追问</h4><p>SO 一定永不销毁吗？答题要点：SO 也有生命周期和引用管理，不能把资产、运行时创建实例和内存常驻混成一个概念。</p>
+<div class="practice"><h4>动手验证</h4><p>找两个引用同一 QuestSO 的位置，说明如果直接修改资产上的目标数量会影响谁。参考 <a href="https://docs.unity3d.com/2022.3/Documentation/ScriptReference/ScriptableObject.html">ScriptableObject 官方说明</a>。</p>
+</div><div class="source"><p>源码定位：QuestSO、QuestManager.QuestProgressData，<a href="#source-08" class="source-chip">S08</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q15" data-search="SO 事件是不是异步消息队列 **面试官问：** VoidEventSO.OnEventRaised 被调用后，订阅者是在下一帧才执行吗？
+
+**先想一想：** 看函数体，而不是根据“事件”这个名字判断。
+
+**参考答案：** 当前实现只是 `VoidEvent?.Invoke()`，是普通 C# 委托同步调用；处理器会在触发调用返回前依次执行。SO 提供可以通过 Inspector 共享引用的事件载体，并没有自动提供排队、历史重放、跨线程或异步能力。没有订阅者时调用直接结束；之后再订阅不会收到此前事件。
+
+**继续追问：** 一个订阅者抛异常，后面的订阅者一定能执行吗？答题要点：普通多播委托不会自动隔离异常；是否逐个捕获、记录失败或中止流程，应按业务语义设计。
+
+**动手验证：** 触发前打印 A，两个订阅者打印 B、C，触发后打印 D；观察顺序，再用受控异常验证传播。恢复代码后再继续练习。
+
+源码定位：VoidEventSO，S09。">
+        <div class="question-top"><span class="q-number">Q15</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="15"><span>已掌握</span></label></div>
+        <h3>SO 事件是不是异步消息队列</h3><div class="ask"><p>VoidEventSO.OnEventRaised 被调用后，订阅者是在下一帧才执行吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>看函数体，而不是根据“事件”这个名字判断。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前实现只是 <code>VoidEvent?.Invoke()</code>，是普通 C# 委托同步调用；处理器会在触发调用返回前依次执行。SO 提供可以通过 Inspector 共享引用的事件载体，并没有自动提供排队、历史重放、跨线程或异步能力。没有订阅者时调用直接结束；之后再订阅不会收到此前事件。</p>
+<h4>面试官继续追问</h4><p>一个订阅者抛异常，后面的订阅者一定能执行吗？答题要点：普通多播委托不会自动隔离异常；是否逐个捕获、记录失败或中止流程，应按业务语义设计。</p>
+<div class="practice"><h4>动手验证</h4><p>触发前打印 A，两个订阅者打印 B、C，触发后打印 D；观察顺序，再用受控异常验证传播。恢复代码后再继续练习。</p>
+</div><div class="source"><p>源码定位：VoidEventSO，<a href="#source-09" class="source-chip">S09</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q16" data-search="为什么事件要成对订阅注销 **面试官问：** 多切几次场景，一次挥剑触发多次结束回调，你如何排查？
+
+**先想一想：** 是否反复 +=，却没有在相应时机 -=？
+
+**参考答案：** 本项目常用 OnEnable 订阅、OnDisable 注销，使监听期跟组件启用期一致。遗漏注销可能保留订阅对象引用或产生重复调用；具体后果取决于发布者、订阅者的寿命。还需确认订阅和注销使用的是同一个 SO 实例及同一个处理器。匿名 lambda 若没有保存委托引用，重新写一个看似相同的 lambda 通常不能注销原来的订阅。
+
+**继续追问：** 如果对象禁用时也必须接收消息呢？答题要点：调整监听生命周期，或把数据处理放到常驻服务；不能无条件套用 OnEnable/OnDisable。
+
+**动手验证：** 连续开关一个组件五次，每次只触发一次事件，核对回调次数；再检查 Inspector 中发布端与订阅端的事件资产是否相同。
+
+源码定位：PlayerMovement、DataManager、VoidEventSO，S01、S09、S14。">
+        <div class="question-top"><span class="q-number">Q16</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="16"><span>已掌握</span></label></div>
+        <h3>为什么事件要成对订阅注销</h3><div class="ask"><p>多切几次场景，一次挥剑触发多次结束回调，你如何排查？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>是否反复 +=，却没有在相应时机 -=？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>本项目常用 OnEnable 订阅、OnDisable 注销，使监听期跟组件启用期一致。遗漏注销可能保留订阅对象引用或产生重复调用；具体后果取决于发布者、订阅者的寿命。还需确认订阅和注销使用的是同一个 SO 实例及同一个处理器。匿名 lambda 若没有保存委托引用，重新写一个看似相同的 lambda 通常不能注销原来的订阅。</p>
+<h4>面试官继续追问</h4><p>如果对象禁用时也必须接收消息呢？答题要点：调整监听生命周期，或把数据处理放到常驻服务；不能无条件套用 OnEnable/OnDisable。</p>
+<div class="practice"><h4>动手验证</h4><p>连续开关一个组件五次，每次只触发一次事件，核对回调次数；再检查 Inspector 中发布端与订阅端的事件资产是否相同。</p>
+</div><div class="source"><p>源码定位：PlayerMovement、DataManager、VoidEventSO，<a href="#source-01" class="source-chip">S01</a>、<a href="#source-09" class="source-chip">S09</a>、<a href="#source-14" class="source-chip">S14</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-5" data-stage="5"><header class="chapter-heading"><span class="chapter-num">05</span><div><span class="eyebrow">STAGE 05 / 10</span><h2>从背包到任务的一致性</h2></div><span class="chapter-range">Q17—Q20</span></header><article class="question" id="q17" data-search="买东西为什么要先检查容量 **面试官问：** 购买 10 个药水，背包只能放下 6 个，应该扣多少钱？当前代码怎么处理？
+
+**先想一想：** 先定义业务规则，再看实现能否保持金币和物品一致。
+
+**参考答案：** 当前普通物品购买采用全收或不收：TryPurchaseItem 检查参数和金币，再通过 TryAddExact 预检总容量并放入全部数量，成功后才扣钱。若放入异常，有移除已加入数量的补救。注意 price 在这个接口里是本次扣款金额，函数内部不会自动乘 amount，调用方必须明确总价语义。
+
+**继续追问：** 这就是数据库事务吗？答题要点：不是；这是当前主线程同步流程下的业务一致性设计，没有完整隔离、持久化提交和逐槽回滚保证。按数量移除的补救也未必恢复原来的槽位分布。
+
+**动手验证：** 测金币不足、容量刚好、容量差一个、负价格、批量购买五种情况；失败时同时核对金币和库存。
+
+源码定位：InventoryManager.TryPurchaseItem、TryAddExact，S10。">
+        <div class="question-top"><span class="q-number">Q17</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="17"><span>已掌握</span></label></div>
+        <h3>买东西为什么要先检查容量</h3><div class="ask"><p>购买 10 个药水，背包只能放下 6 个，应该扣多少钱？当前代码怎么处理？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>先定义业务规则，再看实现能否保持金币和物品一致。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前普通物品购买采用全收或不收：TryPurchaseItem 检查参数和金币，再通过 TryAddExact 预检总容量并放入全部数量，成功后才扣钱。若放入异常，有移除已加入数量的补救。注意 price 在这个接口里是本次扣款金额，函数内部不会自动乘 amount，调用方必须明确总价语义。</p>
+<h4>面试官继续追问</h4><p>这就是数据库事务吗？答题要点：不是；这是当前主线程同步流程下的业务一致性设计，没有完整隔离、持久化提交和逐槽回滚保证。按数量移除的补救也未必恢复原来的槽位分布。</p>
+<div class="practice"><h4>动手验证</h4><p>测金币不足、容量刚好、容量差一个、负价格、批量购买五种情况；失败时同时核对金币和库存。</p>
+</div><div class="source"><p>源码定位：InventoryManager.TryPurchaseItem、TryAddExact，<a href="#source-10" class="source-chip">S10</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q18" data-search="物品历史记录的是累计拾取还是当前持有 **面试官问：** 我捡过 5 个药水，喝掉 2 个，要求上交 5 个的任务能完成吗？
+
+**先想一想：** 不要相信 ItemHistoryManager 这个名字，检查所有写入时的正负号。
+
+**参考答案：** 当前 RecordItem 接受正负增量，使用、出售和丢弃会减少记录；读档时普通物品记录由背包重新构建。这更接近当前库存的镜像，而不是永不减少的累计拾取数。上交任务最后还会检查并扣除真实库存，因此只有 3 个药水不能交 5 个。若要做“曾累计捡到 5 个”，应维护独立的累计计数。
+
+**继续追问：** 背包数量和历史字典会不会不一致？答题要点：存在多份可变数据就需要检查所有写入入口；金币、经验等特殊分支还应单独定义语义，不能笼统说字典永远等于背包。
+
+**动手验证：** 依次拾取、使用、出售、丢弃和读档，比较 GetItemQuantity 与历史计数。发现不一致先定位漏记入口。
+
+源码定位：InventoryManager.RecordItemHistory、RebuildItemHistory；ItemHistoryManager，S10、S11。">
+        <div class="question-top"><span class="q-number">Q18</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="18"><span>已掌握</span></label></div>
+        <h3>物品历史记录的是累计拾取还是当前持有</h3><div class="ask"><p>我捡过 5 个药水，喝掉 2 个，要求上交 5 个的任务能完成吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>不要相信 ItemHistoryManager 这个名字，检查所有写入时的正负号。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 RecordItem 接受正负增量，使用、出售和丢弃会减少记录；读档时普通物品记录由背包重新构建。这更接近当前库存的镜像，而不是永不减少的累计拾取数。上交任务最后还会检查并扣除真实库存，因此只有 3 个药水不能交 5 个。若要做“曾累计捡到 5 个”，应维护独立的累计计数。</p>
+<h4>面试官继续追问</h4><p>背包数量和历史字典会不会不一致？答题要点：存在多份可变数据就需要检查所有写入入口；金币、经验等特殊分支还应单独定义语义，不能笼统说字典永远等于背包。</p>
+<div class="practice"><h4>动手验证</h4><p>依次拾取、使用、出售、丢弃和读档，比较 GetItemQuantity 与历史计数。发现不一致先定位漏记入口。</p>
+</div><div class="source"><p>源码定位：InventoryManager.RecordItemHistory、RebuildItemHistory；ItemHistoryManager，<a href="#source-10" class="source-chip">S10</a>、<a href="#source-11" class="source-chip">S11</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q19" data-search="为什么任务进度不能只用一个 bool **面试官问：** Idle、Accepted、IsToComplete、Completed 和 Decline 分别有什么意义？
+
+**先想一想：** “条件满足”与“领取奖励”是不是同一个时刻？
+
+**参考答案：** 项目用状态区分未接取、已接取、待提交、已完成与拒绝；目标数量保存在 QuestProgressData。条件满足不意味着已经消耗物品或发奖。当前刷新任务板时会检查目标并推进部分状态，提交时再次刷新目标与验证库存。不能说它已经实现了所有目标变化的实时事件推送；地点目标也不能仅凭 SO 有字段就宣称逻辑齐全。
+
+**继续追问：** 进入待提交后把物品卖了怎么办？答题要点：提交时重新验证；界面显示也应根据最新状态刷新，避免只相信先前缓存。
+
+**动手验证：** 达成物品条件后先打开任务板，再卖掉物品后提交。观察 UI 提示、库存和奖励，解释三个状态是否一致。
+
+源码定位：QuestManager.OnReFreshQuestState、UpdateObjectiveProgress、OnQuestOptionChose，S08。">
+        <div class="question-top"><span class="q-number">Q19</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="19"><span>已掌握</span></label></div>
+        <h3>为什么任务进度不能只用一个 bool</h3><div class="ask"><p>Idle、Accepted、IsToComplete、Completed 和 Decline 分别有什么意义？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>“条件满足”与“领取奖励”是不是同一个时刻？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>项目用状态区分未接取、已接取、待提交、已完成与拒绝；目标数量保存在 QuestProgressData。条件满足不意味着已经消耗物品或发奖。当前刷新任务板时会检查目标并推进部分状态，提交时再次刷新目标与验证库存。不能说它已经实现了所有目标变化的实时事件推送；地点目标也不能仅凭 SO 有字段就宣称逻辑齐全。</p>
+<h4>面试官继续追问</h4><p>进入待提交后把物品卖了怎么办？答题要点：提交时重新验证；界面显示也应根据最新状态刷新，避免只相信先前缓存。</p>
+<div class="practice"><h4>动手验证</h4><p>达成物品条件后先打开任务板，再卖掉物品后提交。观察 UI 提示、库存和奖励，解释三个状态是否一致。</p>
+</div><div class="source"><p>源码定位：QuestManager.OnReFreshQuestState、UpdateObjectiveProgress、OnQuestOptionChose，<a href="#source-08" class="source-chip">S08</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q20" data-search="同一任务重复提交如何防止扣物和发奖两次 **面试官问：** 当前判断 previousState 不是 Completed 才发奖，是否已经完全解决重复提交？
+
+**先想一想：** 扣物品发生在状态检查前，还是后？
+
+**参考答案：** 当前 QuestStateChanged 防止从 Completed 再设置 Completed 时直接重复发奖，但提交入口先调用 IsQuestObjDone 和 TryConsumeQuestItems。IsQuestObjDone 对已完成任务直接返回 true，所以若重复完成请求仍能进入、且库存充足，可能再次扣物而不发奖。另外，状态入口缺少统一的合法迁移校验，不能只靠 UI 禁用保护业务。
+
+**继续追问：** 任务两个目标分别要同一种药水 3 个和 4 个，检查各自达成就够吗？答题要点：需要合并成总需求 7 个；当前 TryConsumeQuestItems 已做合并。
+
+**动手验证：** 设计“已完成任务再次收到提交请求”和“合计需求大于库存”两组测试。建议先校验允许的来源状态，再扣物、转状态、发奖，并考虑中途失败的恢复。
+
+源码定位：QuestManager.OnQuestOptionChose、IsQuestObjDone、TryConsumeQuestItems，S08。">
+        <div class="question-top"><span class="q-number">Q20</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="20"><span>已掌握</span></label></div>
+        <h3>同一任务重复提交如何防止扣物和发奖两次</h3><div class="ask"><p>当前判断 previousState 不是 Completed 才发奖，是否已经完全解决重复提交？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>扣物品发生在状态检查前，还是后？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 QuestStateChanged 防止从 Completed 再设置 Completed 时直接重复发奖，但提交入口先调用 IsQuestObjDone 和 TryConsumeQuestItems。IsQuestObjDone 对已完成任务直接返回 true，所以若重复完成请求仍能进入、且库存充足，可能再次扣物而不发奖。另外，状态入口缺少统一的合法迁移校验，不能只靠 UI 禁用保护业务。</p>
+<h4>面试官继续追问</h4><p>任务两个目标分别要同一种药水 3 个和 4 个，检查各自达成就够吗？答题要点：需要合并成总需求 7 个；当前 TryConsumeQuestItems 已做合并。</p>
+<div class="practice"><h4>动手验证</h4><p>设计“已完成任务再次收到提交请求”和“合计需求大于库存”两组测试。建议先校验允许的来源状态，再扣物、转状态、发奖，并考虑中途失败的恢复。</p>
+</div><div class="source"><p>源码定位：QuestManager.OnQuestOptionChose、IsQuestObjDone、TryConsumeQuestItems，<a href="#source-08" class="source-chip">S08</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-6" data-stage="6"><header class="chapter-heading"><span class="chapter-num">06</span><div><span class="eyebrow">STAGE 06 / 10</span><h2>对话 UI 和暂停</h2></div><span class="chapter-range">Q21—Q24</span></header><article class="question" id="q21" data-search="为什么对话按钮可能越点越多次触发 **面试官问：** ShowChoices 用 AddListener 绑定按钮，反复显示选项时会发生什么？
+
+**先想一想：** 每次添加之前，旧监听是否已经清掉？
+
+**参考答案：** DialogManager 在 DisableButtons 中移除运行时监听，再在 ShowChoices 为各按钮绑定目标对话。要逐条检查显示路径：ShowChoices 本身不会先清理；如果同一节点重复进入 ShowChoices，可能重复 AddListener。循环中当前用局部 nextDialog 绑定对应目标，可避免直接捕获共享循环索引造成选项错乱，但闭包正确不等于监听数量正确。
+
+**继续追问：** RemoveAllListeners 会删掉 Inspector 里的所有持久监听吗？答题要点：不能这样理解；还应明确按钮监听由谁拥有，避免把其他模块添加的运行时监听一起清掉。
+
+**动手验证：** 到达有选项的节点后多次尝试推进，再点一个选项，记录 OnOptionSelected 的执行次数。建议统一“清理 → 绑定 → 显示”的入口。
+
+源码定位：DialogManager.AdvanceDialog、ShowChoices、DisableButtons，S12。">
+        <div class="question-top"><span class="q-number">Q21</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="21"><span>已掌握</span></label></div>
+        <h3>为什么对话按钮可能越点越多次触发</h3><div class="ask"><p>ShowChoices 用 AddListener 绑定按钮，反复显示选项时会发生什么？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>每次添加之前，旧监听是否已经清掉？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>DialogManager 在 DisableButtons 中移除运行时监听，再在 ShowChoices 为各按钮绑定目标对话。要逐条检查显示路径：ShowChoices 本身不会先清理；如果同一节点重复进入 ShowChoices，可能重复 AddListener。循环中当前用局部 nextDialog 绑定对应目标，可避免直接捕获共享循环索引造成选项错乱，但闭包正确不等于监听数量正确。</p>
+<h4>面试官继续追问</h4><p>RemoveAllListeners 会删掉 Inspector 里的所有持久监听吗？答题要点：不能这样理解；还应明确按钮监听由谁拥有，避免把其他模块添加的运行时监听一起清掉。</p>
+<div class="practice"><h4>动手验证</h4><p>到达有选项的节点后多次尝试推进，再点一个选项，记录 OnOptionSelected 的执行次数。建议统一“清理 → 绑定 → 显示”的入口。</p>
+</div><div class="source"><p>源码定位：DialogManager.AdvanceDialog、ShowChoices、DisableButtons，<a href="#source-12" class="source-chip">S12</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q22" data-search="UI 透明了为什么还可能挡住点击 **面试官问：** 只把 CanvasGroup.alpha 设为 0，就算关闭面板了吗？
+
+**先想一想：** 看不见、不能交互、不拦截射线，是三个不同状态。
+
+**参考答案：** alpha 控制透明度，interactable 控制组内可交互组件的交互，blocksRaycasts 影响 UI 射线阻挡。项目的 ICanvasManager 和 DialogManager 会一起设置三项，避免透明面板继续挡点击。CanvasGroup 隐藏不会自动停掉 GameObject 上脚本的 Update 或协程，是否停逻辑要另外设计。
+
+**继续追问：** SetActive(false) 和隐藏 CanvasGroup 可以随意替换吗？答题要点：不行；前者会改变对象启用状态和相关生命周期，影响监听与协程等行为。
+
+**动手验证：** 在按钮上方放一个透明面板，分别切换三个属性；用 UI 射线结果确认是哪一个对象阻挡点击。
+
+源码定位：ICanvasManager.SetCanvaState、DialogManager.SetDialogCanvas，S12、S13。">
+        <div class="question-top"><span class="q-number">Q22</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="22"><span>已掌握</span></label></div>
+        <h3>UI 透明了为什么还可能挡住点击</h3><div class="ask"><p>只把 CanvasGroup.alpha 设为 0，就算关闭面板了吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>看不见、不能交互、不拦截射线，是三个不同状态。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>alpha 控制透明度，interactable 控制组内可交互组件的交互，blocksRaycasts 影响 UI 射线阻挡。项目的 ICanvasManager 和 DialogManager 会一起设置三项，避免透明面板继续挡点击。CanvasGroup 隐藏不会自动停掉 GameObject 上脚本的 Update 或协程，是否停逻辑要另外设计。</p>
+<h4>面试官继续追问</h4><p>SetActive(false) 和隐藏 CanvasGroup 可以随意替换吗？答题要点：不行；前者会改变对象启用状态和相关生命周期，影响监听与协程等行为。</p>
+<div class="practice"><h4>动手验证</h4><p>在按钮上方放一个透明面板，分别切换三个属性；用 UI 射线结果确认是哪一个对象阻挡点击。</p>
+</div><div class="source"><p>源码定位：ICanvasManager.SetCanvaState、DialogManager.SetDialogCanvas，<a href="#source-12" class="source-chip">S12</a>、<a href="#source-13" class="source-chip">S13</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q23" data-search="ESC 为什么应该关闭最上面的面板 **面试官问：** 先开背包，再开任务，点一下背包把它置顶，然后按 ESC，应该关谁？
+
+**先想一想：** 打开顺序、视觉顺序和焦点顺序是否同步？
+
+**参考答案：** 通常应关闭当前最上层、获得焦点的面板。CanvasFocusStack 用 LinkedList 维护打开顺序，并处理焦点变化、关闭请求和 sortingOrder 刷新。它是纯 C# 类，实际显示由回调交给外部。好处是顺序规则可独立测试；仍须保证面板把真实开关结果回报给它，不能只有“发出请求”却认为显示一定成功。
+
+**继续追问：** LinkedList 按枚举值删除就是 O(1) 吗？答题要点：先查找值仍为 O(n)；已有节点引用时删除才是 O(1)。面板很少时不必为理论复杂度过度设计。
+
+**动手验证：** 按题目顺序操作，再测重复关闭、关闭不存在面板、清空所有面板；核对当前焦点和显示顺序。
+
+源码定位：CanvasFocusStack.HandleFocus、ReportState、HandleESCOrCloseTop，S13。">
+        <div class="question-top"><span class="q-number">Q23</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="23"><span>已掌握</span></label></div>
+        <h3>ESC 为什么应该关闭最上面的面板</h3><div class="ask"><p>先开背包，再开任务，点一下背包把它置顶，然后按 ESC，应该关谁？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>打开顺序、视觉顺序和焦点顺序是否同步？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>通常应关闭当前最上层、获得焦点的面板。CanvasFocusStack 用 LinkedList 维护打开顺序，并处理焦点变化、关闭请求和 sortingOrder 刷新。它是纯 C# 类，实际显示由回调交给外部。好处是顺序规则可独立测试；仍须保证面板把真实开关结果回报给它，不能只有“发出请求”却认为显示一定成功。</p>
+<h4>面试官继续追问</h4><p>LinkedList 按枚举值删除就是 O(1) 吗？答题要点：先查找值仍为 O(n)；已有节点引用时删除才是 O(1)。面板很少时不必为理论复杂度过度设计。</p>
+<div class="practice"><h4>动手验证</h4><p>按题目顺序操作，再测重复关闭、关闭不存在面板、清空所有面板；核对当前焦点和显示顺序。</p>
+</div><div class="source"><p>源码定位：CanvasFocusStack.HandleFocus、ReportState、HandleESCOrCloseTop，<a href="#source-13" class="source-chip">S13</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q24" data-search="两个系统都暂停游戏应该怎么恢复 **面试官问：** 菜单与场景加载同时要求暂停，菜单关闭后是否应该立即恢复？
+
+**先想一想：** 一个 bool 能不能表达两个尚未结束的暂停原因？
+
+**参考答案：** 应等所有需要暂停的原因都解除再恢复。当前 TimeManager 有 pauseCount，但 PauseGame 没有递增它，ResumeGame 却递减，所以不能宣称当前实现了正确的引用计数暂停。建议使用成对申请和释放，或返回可释放的暂停令牌，以便识别拥有者、避免重复释放并清理异常流程。
+
+**继续追问：** timeScale 为 0 时 UI 还能更新吗？答题要点：不代表所有代码停止；缩放时间等待会停住，需独立运行的过渡可使用 unscaledDeltaTime 或 WaitForSecondsRealtime。项目淡入淡出就是这种用法。
+
+**动手验证：** 依次模拟 A 暂停、B 暂停、A 恢复、B 恢复，预期前三步仍暂停、最后恢复。再用缩放与非缩放等待作对比。
+
+源码定位：TimeManager、SceneChanger.FadeCanvasGroup，S15、S17。参阅 [Unity 协程说明](https://docs.unity3d.com/2022.3/Documentation/Manual/Coroutines.html)。">
+        <div class="question-top"><span class="q-number">Q24</span><span class="question-level">功能实战</span><label class="mastered"><input type="checkbox" data-q="24"><span>已掌握</span></label></div>
+        <h3>两个系统都暂停游戏应该怎么恢复</h3><div class="ask"><p>菜单与场景加载同时要求暂停，菜单关闭后是否应该立即恢复？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>一个 bool 能不能表达两个尚未结束的暂停原因？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>应等所有需要暂停的原因都解除再恢复。当前 TimeManager 有 pauseCount，但 PauseGame 没有递增它，ResumeGame 却递减，所以不能宣称当前实现了正确的引用计数暂停。建议使用成对申请和释放，或返回可释放的暂停令牌，以便识别拥有者、避免重复释放并清理异常流程。</p>
+<h4>面试官继续追问</h4><p>timeScale 为 0 时 UI 还能更新吗？答题要点：不代表所有代码停止；缩放时间等待会停住，需独立运行的过渡可使用 unscaledDeltaTime 或 WaitForSecondsRealtime。项目淡入淡出就是这种用法。</p>
+<div class="practice"><h4>动手验证</h4><p>依次模拟 A 暂停、B 暂停、A 恢复、B 恢复，预期前三步仍暂停、最后恢复。再用缩放与非缩放等待作对比。</p>
+</div><div class="source"><p>源码定位：TimeManager、SceneChanger.FadeCanvasGroup，<a href="#source-15" class="source-chip">S15</a>、<a href="#source-17" class="source-chip">S17</a>。参阅 <a href="https://docs.unity3d.com/2022.3/Documentation/Manual/Coroutines.html">Unity 协程说明</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-7" data-stage="7"><header class="chapter-heading"><span class="chapter-num">07</span><div><span class="eyebrow">STAGE 07 / 10</span><h2>存档不仅是写 JSON</h2></div><span class="chapter-range">Q25—Q28</span></header><article class="question" id="q25" data-search="DataManager 和 SaveSystem 为什么分开 **面试官问：** 请从点击保存开始，解释数据如何从对象变成磁盘文件。
+
+**先想一想：** 收集状态、描述数据、序列化、文件读写，各是哪一层的责任？
+
+**参考答案：** ISaveable 让背包、任务等对象提供 SaveData 和 LoadData；DataManager 管理注册表并收集状态到 Data；SaveSystem 封装 SaveInfo 与 Data，通过 Newtonsoft.Json 序列化并写入 persistentDataPath。手动保存需要先 PrepareManualSaveData 采集最新数据，不能把 WriteSave 当成自动抓取全场状态的入口。
+
+**继续追问：** 在遍历注册表时为何用 ToList？答题要点：获得成员快照，避免回调过程中原列表增删使枚举失效；它只是浅复制，不会冻结对象状态，也不自动提供线程安全。
+
+**动手验证：** 用临时测试档保存金币变化前后两次，比较 JSON。再解释“采集前写盘”为什么可能写到旧值。
+
+源码定位：ISaveable、DataManager.PrepareManualSaveData、SaveSystem.WriteSave、Data，S07、S14、S16。">
+        <div class="question-top"><span class="q-number">Q25</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="25"><span>已掌握</span></label></div>
+        <h3>DataManager 和 SaveSystem 为什么分开</h3><div class="ask"><p>请从点击保存开始，解释数据如何从对象变成磁盘文件。</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>收集状态、描述数据、序列化、文件读写，各是哪一层的责任？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>ISaveable 让背包、任务等对象提供 SaveData 和 LoadData；DataManager 管理注册表并收集状态到 Data；SaveSystem 封装 SaveInfo 与 Data，通过 Newtonsoft.Json 序列化并写入 persistentDataPath。手动保存需要先 PrepareManualSaveData 采集最新数据，不能把 WriteSave 当成自动抓取全场状态的入口。</p>
+<h4>面试官继续追问</h4><p>在遍历注册表时为何用 ToList？答题要点：获得成员快照，避免回调过程中原列表增删使枚举失效；它只是浅复制，不会冻结对象状态，也不自动提供线程安全。</p>
+<div class="practice"><h4>动手验证</h4><p>用临时测试档保存金币变化前后两次，比较 JSON。再解释“采集前写盘”为什么可能写到旧值。</p>
+</div><div class="source"><p>源码定位：ISaveable、DataManager.PrepareManualSaveData、SaveSystem.WriteSave、Data，<a href="#source-07" class="source-chip">S07</a>、<a href="#source-14" class="source-chip">S14</a>、<a href="#source-16" class="source-chip">S16</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q26" data-search="为什么物品资源名不是永久可靠的存档 ID **面试官问：** 把药水资源从 Potion 改名为 HealthPotion，旧存档还能恢复吗？
+
+**先想一想：** 数据里存的是资产引用、显示名、资源名，还是独立 ID？
+
+**参考答案：** 当前背包存 item.name，再从 knownItems 按名字恢复；任务也用资源名构造键。改名或同名资源会让匹配失效或产生歧义。资源名比会本地化的显示名称方便，但不是不可变身份。建议使用创建后稳定且唯一的业务 ID，并提供旧键到新键的迁移映射。GetInstanceID 也不适合作跨运行持久化身份。
+
+**继续追问：** 任务目标按列表序号保存，交换两个目标会怎样？答题要点：进度可能对应错目标；独立 objectiveId 和存档版本迁移更可靠。
+
+**动手验证：** 只在备份/临时资产上做改名和目标重排实验，观察旧数据如何匹配。区分“Unity 资产引用依赖 .meta GUID”与“业务存档自己用字符串键”。
+
+源码定位：InventoryManager.SaveData、LoadData；QuestManager.CreateStatus、ApplySavedProgress，S08、S10。">
+        <div class="question-top"><span class="q-number">Q26</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="26"><span>已掌握</span></label></div>
+        <h3>为什么物品资源名不是永久可靠的存档 ID</h3><div class="ask"><p>把药水资源从 Potion 改名为 HealthPotion，旧存档还能恢复吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>数据里存的是资产引用、显示名、资源名，还是独立 ID？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前背包存 item.name，再从 knownItems 按名字恢复；任务也用资源名构造键。改名或同名资源会让匹配失效或产生歧义。资源名比会本地化的显示名称方便，但不是不可变身份。建议使用创建后稳定且唯一的业务 ID，并提供旧键到新键的迁移映射。GetInstanceID 也不适合作跨运行持久化身份。</p>
+<h4>面试官继续追问</h4><p>任务目标按列表序号保存，交换两个目标会怎样？答题要点：进度可能对应错目标；独立 objectiveId 和存档版本迁移更可靠。</p>
+<div class="practice"><h4>动手验证</h4><p>只在备份/临时资产上做改名和目标重排实验，观察旧数据如何匹配。区分“Unity 资产引用依赖 .meta GUID”与“业务存档自己用字符串键”。</p>
+</div><div class="source"><p>源码定位：InventoryManager.SaveData、LoadData；QuestManager.CreateStatus、ApplySavedProgress，<a href="#source-08" class="source-chip">S08</a>、<a href="#source-10" class="source-chip">S10</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q27" data-search="读档为什么还会触发自动存档问题 **面试官问：** 从当前游戏读入旧存档时，为什么恢复后的背包或位置可能被当前场景覆盖？
+
+**先想一想：** 读档与普通切场景是否使用同一个加载事件？
+
+**参考答案：** LoadSave 先把存档装入 DataManager，再发场景加载请求；普通加载请求同时会触发 DataManager.OnAutoSave。如果不区分原因，它会重新收集即将离开的当前场景，污染刚读入的快照。当前 IsLoadingSaveRequest 在同步请求期间标记读档，让 OnAutoSave 跳过采集，并用 finally 清理标记。
+
+**继续追问：** finally 执行时场景已经异步加载完成了吗？答题要点：没有。标记覆盖的是同步事件分发窗口，不能作为整个加载操作的进行中状态。若以后改为排队事件，应随请求携带 LoadReason。
+
+**动手验证：** 存下位置 A 与金币 10，再走到 B、改变金币后读取 A 的档，跟踪 LoadFromData、OnAutoSave、OnLoadCompleted 的顺序和数据。
+
+源码定位：SaveSystem.LoadSave、DataManager.OnAutoSave，S14、S16。">
+        <div class="question-top"><span class="q-number">Q27</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="27"><span>已掌握</span></label></div>
+        <h3>读档为什么还会触发自动存档问题</h3><div class="ask"><p>从当前游戏读入旧存档时，为什么恢复后的背包或位置可能被当前场景覆盖？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>读档与普通切场景是否使用同一个加载事件？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>LoadSave 先把存档装入 DataManager，再发场景加载请求；普通加载请求同时会触发 DataManager.OnAutoSave。如果不区分原因，它会重新收集即将离开的当前场景，污染刚读入的快照。当前 IsLoadingSaveRequest 在同步请求期间标记读档，让 OnAutoSave 跳过采集，并用 finally 清理标记。</p>
+<h4>面试官继续追问</h4><p>finally 执行时场景已经异步加载完成了吗？答题要点：没有。标记覆盖的是同步事件分发窗口，不能作为整个加载操作的进行中状态。若以后改为排队事件，应随请求携带 LoadReason。</p>
+<div class="practice"><h4>动手验证</h4><p>存下位置 A 与金币 10，再走到 B、改变金币后读取 A 的档，跟踪 LoadFromData、OnAutoSave、OnLoadCompleted 的顺序和数据。</p>
+</div><div class="source"><p>源码定位：SaveSystem.LoadSave、DataManager.OnAutoSave，<a href="#source-14" class="source-chip">S14</a>、<a href="#source-16" class="source-chip">S16</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q28" data-search="坏档和旧档分别怎么处理 **面试官问：** 最新档 JSON 截断了，与旧档缺少 inventorySlots 字段，是同一类问题吗？
+
+**先想一想：** 格式损坏、结构缺失、语义不合法，应该分别检查。
+
+**参考答案：** 当前 GetLatestLoadableSavePath 会倒序寻找可解析、含角色数据且场景可定位的档，允许跳过部分坏档。Data 的默认集合与各 LoadData 的校验兼容部分缺字段旧档，但不代表覆盖全部迁移问题。WriteSave 目前直接写最终文件，没有完整的临时文件提交策略。建议增加版本号、迁移步骤、数值与 ID 校验，并采用经目标平台验证的替换/备份写入方案。
+
+**继续追问：** 加校验和就能防作弊吗？答题要点：普通校验和用于发现损坏，不等于可信认证；也不能解决“字段合法但业务含义错了”。
+
+**动手验证：** 复制一份测试档，分别截断内容、删除新增字段、改成不存在的场景 ID，记录回退行为；不要破坏唯一的真实存档。
+
+源码定位：SaveSystem.IsLoadableSaveFile、GetLatestLoadableSavePath、WriteSave，S16。">
+        <div class="question-top"><span class="q-number">Q28</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="28"><span>已掌握</span></label></div>
+        <h3>坏档和旧档分别怎么处理</h3><div class="ask"><p>最新档 JSON 截断了，与旧档缺少 inventorySlots 字段，是同一类问题吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>格式损坏、结构缺失、语义不合法，应该分别检查。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 GetLatestLoadableSavePath 会倒序寻找可解析、含角色数据且场景可定位的档，允许跳过部分坏档。Data 的默认集合与各 LoadData 的校验兼容部分缺字段旧档，但不代表覆盖全部迁移问题。WriteSave 目前直接写最终文件，没有完整的临时文件提交策略。建议增加版本号、迁移步骤、数值与 ID 校验，并采用经目标平台验证的替换/备份写入方案。</p>
+<h4>面试官继续追问</h4><p>加校验和就能防作弊吗？答题要点：普通校验和用于发现损坏，不等于可信认证；也不能解决“字段合法但业务含义错了”。</p>
+<div class="practice"><h4>动手验证</h4><p>复制一份测试档，分别截断内容、删除新增字段、改成不存在的场景 ID，记录回退行为；不要破坏唯一的真实存档。</p>
+</div><div class="source"><p>源码定位：SaveSystem.IsLoadableSaveFile、GetLatestLoadableSavePath、WriteSave，<a href="#source-16" class="source-chip">S16</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-8" data-stage="8"><header class="chapter-heading"><span class="chapter-num">08</span><div><span class="eyebrow">STAGE 08 / 10</span><h2>场景切换和异步流程</h2></div><span class="chapter-range">Q29—Q32</span></header><article class="question" id="q29" data-search="请讲清项目的场景组织 **面试官问：** InitialScene、PersistentScene 和游戏内容场景各自有什么职责？
+
+**先想一想：** 哪些对象应跟着地点变化，哪些对象应持续存在？
+
+**参考答案：** InitialLoad 在启动时加载 persistentScene；SceneChanger 再用 Additive 方式加载菜单或地点内容场景，切换时卸载旧内容场景。这样常驻服务和内容可以分别管理。不是所有加载都用了 Additive：InitialLoad 的调用没有显式传这个模式，不能把后续场景加载策略套到整个启动流程上。
+
+**继续追问：** 场景加载完成就自动成为 Active Scene 吗？答题要点：Additive 加载与设置活动场景是不同操作；应明确新生成对象归属哪个场景。项目丢弃物品时显式 MoveGameObjectToScene，就是相关例子。
+
+**动手验证：** 从启动场景进入游戏，观察 Hierarchy 的场景分组；生成一个丢弃物，记录其 scene，再切场景看其生命周期。
+
+源码定位：InitialLoad、SceneChanger.LoadScene、InventoryManager.DropLoot，S10、S17、S18。参阅 [Addressables 场景加载](https://docs.unity3d.com/Packages/com.unity.addressables@1.22/manual/LoadingScenes.html)。">
+        <div class="question-top"><span class="q-number">Q29</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="29"><span>已掌握</span></label></div>
+        <h3>请讲清项目的场景组织</h3><div class="ask"><p>InitialScene、PersistentScene 和游戏内容场景各自有什么职责？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>哪些对象应跟着地点变化，哪些对象应持续存在？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>InitialLoad 在启动时加载 persistentScene；SceneChanger 再用 Additive 方式加载菜单或地点内容场景，切换时卸载旧内容场景。这样常驻服务和内容可以分别管理。不是所有加载都用了 Additive：InitialLoad 的调用没有显式传这个模式，不能把后续场景加载策略套到整个启动流程上。</p>
+<h4>面试官继续追问</h4><p>场景加载完成就自动成为 Active Scene 吗？答题要点：Additive 加载与设置活动场景是不同操作；应明确新生成对象归属哪个场景。项目丢弃物品时显式 MoveGameObjectToScene，就是相关例子。</p>
+<div class="practice"><h4>动手验证</h4><p>从启动场景进入游戏，观察 Hierarchy 的场景分组；生成一个丢弃物，记录其 scene，再切场景看其生命周期。</p>
+</div><div class="source"><p>源码定位：InitialLoad、SceneChanger.LoadScene、InventoryManager.DropLoot，<a href="#source-10" class="source-chip">S10</a>、<a href="#source-17" class="source-chip">S17</a>、<a href="#source-18" class="source-chip">S18</a>。参阅 <a href="https://docs.unity3d.com/Packages/com.unity.addressables@1.22/manual/LoadingScenes.html">Addressables 场景加载</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q30" data-search="异步加载是不是另开一个线程执行我的代码 **面试官问：** LoadSceneAsync 和协程为什么不会把整个游戏卡在等待上？协程里可以放心执行十秒计算吗？
+
+**先想一想：** “等待期间交回控制权”和“计算被放到其他线程”并不相同。
+
+**参考答案：** 异步 API 让调用方发起操作后可以等待完成通知；协程在 yield 处挂起，之后按条件继续。普通 Unity 协程中的同步代码仍在主线程执行，十秒大循环会阻塞主线程。不能把所有引擎内部资源加载工作都概括为单线程或多线程；关键是知道自己的代码在哪里运行，以及哪些 Unity API 只能在主线程访问。
+
+**继续追问：** 场景异步加载就完全没有卡顿吗？答题要点：资源处理、激活、Awake 和 OnEnable 中的大量初始化仍可能产生主线程尖峰，应实测各阶段耗时。
+
+**动手验证：** 在小测试场景中比较分帧处理与一次处理一批数据的 Profiler 时间线，避免在正式场景中故意阻塞十秒。
+
+源码定位：SceneChanger.UnloadCurrentScene、LoadScene，S17。参阅 [Unity 协程文档](https://docs.unity3d.com/2022.3/Documentation/Manual/Coroutines.html)。">
+        <div class="question-top"><span class="q-number">Q30</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="30"><span>已掌握</span></label></div>
+        <h3>异步加载是不是另开一个线程执行我的代码</h3><div class="ask"><p>LoadSceneAsync 和协程为什么不会把整个游戏卡在等待上？协程里可以放心执行十秒计算吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>“等待期间交回控制权”和“计算被放到其他线程”并不相同。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>异步 API 让调用方发起操作后可以等待完成通知；协程在 yield 处挂起，之后按条件继续。普通 Unity 协程中的同步代码仍在主线程执行，十秒大循环会阻塞主线程。不能把所有引擎内部资源加载工作都概括为单线程或多线程；关键是知道自己的代码在哪里运行，以及哪些 Unity API 只能在主线程访问。</p>
+<h4>面试官继续追问</h4><p>场景异步加载就完全没有卡顿吗？答题要点：资源处理、激活、Awake 和 OnEnable 中的大量初始化仍可能产生主线程尖峰，应实测各阶段耗时。</p>
+<div class="practice"><h4>动手验证</h4><p>在小测试场景中比较分帧处理与一次处理一批数据的 Profiler 时间线，避免在正式场景中故意阻塞十秒。</p>
+</div><div class="source"><p>源码定位：SceneChanger.UnloadCurrentScene、LoadScene，<a href="#source-17" class="source-chip">S17</a>。参阅 <a href="https://docs.unity3d.com/2022.3/Documentation/Manual/Coroutines.html">Unity 协程文档</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q31" data-search="连续收到两次加载请求会怎样 **面试官问：** 玩家短时间触发两个传送点，或加载失败，当前流程一定能恢复吗？
+
+**先想一想：** 回调使用自己的请求数据，还是一个后来可以被覆盖的成员字段？
+
+**参考答案：** SceneChanger 用共享 sceneToLoad、newPosition 和 isToFade 保存请求，当前入口没有明确的加载中拦截。重复请求可能启动多个协程并覆盖这些字段。OnLoadCompleted 又直接用 handle.Result 和 sceneToLoad 更新状态，没有先检查操作成功与否。建议建立加载状态，采用明确的拒绝、排队或替换策略，让回调绑定请求身份，并集中处理失败时的输入、暂停和遮罩恢复。
+
+**继续追问：** 只加 isLoading=true 就解决了吗？答题要点：每个成功、失败、取消和禁用出口都要释放状态；否则只是把重入问题换成永久锁住。
+
+**动手验证：** 在测试环境连续发两次不同目标请求，再使用无效引用模拟失败；核对当前场景、玩家位置、输入状态、timeScale 和遮罩。
+
+源码定位：SceneChanger.OnLoadRequestEvent、UnloadCurrentScene、OnLoadCompleted，S17。">
+        <div class="question-top"><span class="q-number">Q31</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="31"><span>已掌握</span></label></div>
+        <h3>连续收到两次加载请求会怎样</h3><div class="ask"><p>玩家短时间触发两个传送点，或加载失败，当前流程一定能恢复吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>回调使用自己的请求数据，还是一个后来可以被覆盖的成员字段？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>SceneChanger 用共享 sceneToLoad、newPosition 和 isToFade 保存请求，当前入口没有明确的加载中拦截。重复请求可能启动多个协程并覆盖这些字段。OnLoadCompleted 又直接用 handle.Result 和 sceneToLoad 更新状态，没有先检查操作成功与否。建议建立加载状态，采用明确的拒绝、排队或替换策略，让回调绑定请求身份，并集中处理失败时的输入、暂停和遮罩恢复。</p>
+<h4>面试官继续追问</h4><p>只加 isLoading=true 就解决了吗？答题要点：每个成功、失败、取消和禁用出口都要释放状态；否则只是把重入问题换成永久锁住。</p>
+<div class="practice"><h4>动手验证</h4><p>在测试环境连续发两次不同目标请求，再使用无效引用模拟失败；核对当前场景、玩家位置、输入状态、timeScale 和遮罩。</p>
+</div><div class="source"><p>源码定位：SceneChanger.OnLoadRequestEvent、UnloadCurrentScene、OnLoadCompleted，<a href="#source-17" class="source-chip">S17</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q32" data-search="编辑器能加载为什么打包后失败 **面试官问：** 用 Addressables 的场景在编辑器里正常，构建后找不到，如何排查？
+
+**先想一想：** 编辑器直接读资产与玩家程序读构建产物，走的是不是同一条路径？
+
+**参考答案：** 先记录实际 key、句柄状态和异常，再检查场景引用是否有效、是否在正确的组、内容是否为目标平台构建，以及 catalog、构建路径和加载路径是否一致。编辑器的资产数据库模式可能掩盖内容构建缺失。最后在真实构建环境验证启动入口到目标场景的完整链路，不能只验证一个 AssetReference 在 Inspector 中非空。
+
+**继续追问：** Addressables 等于已经实现热更新吗？答题要点：它提供资源寻址和加载等能力；远程内容、版本发布、更新流程与失败回退需要额外配置和实现。普通 Addressables 资源更新也不等于 C# 代码热更新。
+
+**动手验证：** 画出“入口场景 → 常驻场景 → 菜单 → 地点”的依赖图，给每一跳记录引用、构建产物和成功/失败日志。
+
+源码定位：InitialLoad、SceneChanger、GameSceneSO，S17、S18。官方依据见 [Addressables 场景加载说明](https://docs.unity3d.com/Packages/com.unity.addressables@1.22/manual/LoadingScenes.html)。">
+        <div class="question-top"><span class="q-number">Q32</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="32"><span>已掌握</span></label></div>
+        <h3>编辑器能加载为什么打包后失败</h3><div class="ask"><p>用 Addressables 的场景在编辑器里正常，构建后找不到，如何排查？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>编辑器直接读资产与玩家程序读构建产物，走的是不是同一条路径？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>先记录实际 key、句柄状态和异常，再检查场景引用是否有效、是否在正确的组、内容是否为目标平台构建，以及 catalog、构建路径和加载路径是否一致。编辑器的资产数据库模式可能掩盖内容构建缺失。最后在真实构建环境验证启动入口到目标场景的完整链路，不能只验证一个 AssetReference 在 Inspector 中非空。</p>
+<h4>面试官继续追问</h4><p>Addressables 等于已经实现热更新吗？答题要点：它提供资源寻址和加载等能力；远程内容、版本发布、更新流程与失败回退需要额外配置和实现。普通 Addressables 资源更新也不等于 C# 代码热更新。</p>
+<div class="practice"><h4>动手验证</h4><p>画出“入口场景 → 常驻场景 → 菜单 → 地点”的依赖图，给每一跳记录引用、构建产物和成功/失败日志。</p>
+</div><div class="source"><p>源码定位：InitialLoad、SceneChanger、GameSceneSO，<a href="#source-17" class="source-chip">S17</a>、<a href="#source-18" class="source-chip">S18</a>。官方依据见 <a href="https://docs.unity3d.com/Packages/com.unity.addressables@1.22/manual/LoadingScenes.html">Addressables 场景加载说明</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-9" data-stage="9"><header class="chapter-heading"><span class="chapter-num">09</span><div><span class="eyebrow">STAGE 09 / 10</span><h2>从 A 星原理追到实现细节</h2></div><span class="chapter-range">Q33—Q36</span></header><article class="question" id="q33" data-search="A 星中的 g h f 分别是什么 **面试官问：** 为什么你会把一个节点加入 open 集合？为什么选择 f 最小的节点？
+
+**先想一想：** 已经走了多少，与预计还要走多少，需要分开保存。
+
+**参考答案：** g 是起点到当前节点已知的路径代价，h 是当前节点到目标的估计代价，f=g+h。每次从 open 中选择最低 f 的候选扩展；发现更小的 g 时更新节点及父节点，找到终点后沿父节点回溯。项目用 Dictionary 保存 open、HashSet 保存 closed、Stack 返回路径。启发式与边代价的关系影响搜索效率和最优性，不能只背公式。
+
+**继续追问：** h=0 会怎样？答题要点：在非负边权等标准前提下，按累计代价搜索，退化为 Dijkstra 的搜索策略；通常会探索更多节点。
+
+**动手验证：** 在 5×5 网格纸上设置起终点和障碍，手算前三次展开的 g、h、f，并画出父节点方向。不要跳过代价相同时如何选取的约定。
+
+源码定位：AStarPathFinder.FindPath、AddNodeToOpen、RetracePath，S19。">
+        <div class="question-top"><span class="q-number">Q33</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="33"><span>已掌握</span></label></div>
+        <h3>A 星中的 g h f 分别是什么</h3><div class="ask"><p>为什么你会把一个节点加入 open 集合？为什么选择 f 最小的节点？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>已经走了多少，与预计还要走多少，需要分开保存。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>g 是起点到当前节点已知的路径代价，h 是当前节点到目标的估计代价，f=g+h。每次从 open 中选择最低 f 的候选扩展；发现更小的 g 时更新节点及父节点，找到终点后沿父节点回溯。项目用 Dictionary 保存 open、HashSet 保存 closed、Stack 返回路径。启发式与边代价的关系影响搜索效率和最优性，不能只背公式。</p>
+<h4>面试官继续追问</h4><p>h=0 会怎样？答题要点：在非负边权等标准前提下，按累计代价搜索，退化为 Dijkstra 的搜索策略；通常会探索更多节点。</p>
+<div class="practice"><h4>动手验证</h4><p>在 5×5 网格纸上设置起终点和障碍，手算前三次展开的 g、h、f，并画出父节点方向。不要跳过代价相同时如何选取的约定。</p>
+</div><div class="source"><p>源码定位：AStarPathFinder.FindPath、AddNodeToOpen、RetracePath，<a href="#source-19" class="source-chip">S19</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q34" data-search="你的 CalDistance 真的是欧氏距离吗 **面试官问：** 当前函数先算 dx+dy，然后返回 1 或 1.414。距离十格和距离两格有什么不同？
+
+**先想一想：** 同一个函数被拿去算相邻边代价，又被拿去估算到终点的距离。
+
+**参考答案：** 当前 CalDistance 对曼哈顿差值大于等于 2 的情况都返回 1.414，否则返回 1。它用于相邻直走/斜走时大致符合边代价，但用来估算任意远终点时区分能力很弱；同一点还会返回 1，而不是 0。因此不能把当前实现介绍成标准欧氏距离，也不能直接套用标准启发式保证最优性的证明。
+
+**继续追问：** 八方向、直走代价 1、斜走代价约 1.414 时怎么写更合适？答题要点：可用八方向距离 `max(dx,dy) + (D2-1)*min(dx,dy)`，D2 与实际斜边代价一致。四方向才常用曼哈顿距离；不能混用成本模型。
+
+**动手验证：** 列出 (0,0) 到 (0,0)、(1,0)、(1,1)、(10,0) 的当前返回值；与建议公式比较。改进验证应比较路径总代价和展开节点数，而不仅是“能走到”。
+
+源码定位：PathFinderDetails.CalDistance，S20。">
+        <div class="question-top"><span class="q-number">Q34</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="34"><span>已掌握</span></label></div>
+        <h3>你的 CalDistance 真的是欧氏距离吗</h3><div class="ask"><p>当前函数先算 dx+dy，然后返回 1 或 1.414。距离十格和距离两格有什么不同？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>同一个函数被拿去算相邻边代价，又被拿去估算到终点的距离。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 CalDistance 对曼哈顿差值大于等于 2 的情况都返回 1.414，否则返回 1。它用于相邻直走/斜走时大致符合边代价，但用来估算任意远终点时区分能力很弱；同一点还会返回 1，而不是 0。因此不能把当前实现介绍成标准欧氏距离，也不能直接套用标准启发式保证最优性的证明。</p>
+<h4>面试官继续追问</h4><p>八方向、直走代价 1、斜走代价约 1.414 时怎么写更合适？答题要点：可用八方向距离 <code>max(dx,dy) + (D2-1)*min(dx,dy)</code>，D2 与实际斜边代价一致。四方向才常用曼哈顿距离；不能混用成本模型。</p>
+<div class="practice"><h4>动手验证</h4><p>列出 (0,0) 到 (0,0)、(1,0)、(1,1)、(10,0) 的当前返回值；与建议公式比较。改进验证应比较路径总代价和展开节点数，而不仅是“能走到”。</p>
+</div><div class="source"><p>源码定位：PathFinderDetails.CalDistance，<a href="#source-20" class="source-chip">S20</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q35" data-search="斜着走是否会穿过墙角 **面试官问：** 斜向目标格能走，就代表角色一定能安全通过吗？
+
+**先想一想：** 两个相邻侧格和角色碰撞体宽度会影响通行。
+
+**参考答案：** 当前 CanWalkDiagonally 在两个侧格都不可走时才拒绝，因此只有一侧阻挡时仍允许斜走。这是否符合需求要按角色宽度和障碍规则判断；严格禁止切角可在任一侧阻挡时拒绝。函数还直接用字典索引访问侧格，未在此处检查键是否存在；若地图边缘或稀疏网格缺格，会有异常风险。
+
+**继续追问：** 把 &amp;&amp; 改成 || 就全部修好了吗？答题要点：还要检查不存在的格子如何处理、世界坐标转换、网格尺寸与角色安全边距。算法通路不自动等于物理碰撞体能通过。
+
+**动手验证：** 分别布置双侧墙、单侧墙、地图缺角三种情况，比较预期与实际路线；用 Gizmos 同时画网格路径和碰撞体范围。
+
+源码定位：AStarPathFinder.CanWalkDiagonally、AStarNodeManager，S19、S21。">
+        <div class="question-top"><span class="q-number">Q35</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="35"><span>已掌握</span></label></div>
+        <h3>斜着走是否会穿过墙角</h3><div class="ask"><p>斜向目标格能走，就代表角色一定能安全通过吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>两个相邻侧格和角色碰撞体宽度会影响通行。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前 CanWalkDiagonally 在两个侧格都不可走时才拒绝，因此只有一侧阻挡时仍允许斜走。这是否符合需求要按角色宽度和障碍规则判断；严格禁止切角可在任一侧阻挡时拒绝。函数还直接用字典索引访问侧格，未在此处检查键是否存在；若地图边缘或稀疏网格缺格，会有异常风险。</p>
+<h4>面试官继续追问</h4><p>把 &amp;&amp; 改成 || 就全部修好了吗？答题要点：还要检查不存在的格子如何处理、世界坐标转换、网格尺寸与角色安全边距。算法通路不自动等于物理碰撞体能通过。</p>
+<div class="practice"><h4>动手验证</h4><p>分别布置双侧墙、单侧墙、地图缺角三种情况，比较预期与实际路线；用 Gizmos 同时画网格路径和碰撞体范围。</p>
+</div><div class="source"><p>源码定位：AStarPathFinder.CanWalkDiagonally、AStarNodeManager，<a href="#source-19" class="source-chip">S19</a>、<a href="#source-21" class="source-chip">S21</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q36" data-search="已有重寻路冷却为什么还可能掉帧 **面试官问：** MovementController 有 0.5 秒冷却，敌人目标不可达时应该最多每秒算两次吧？
+
+**先想一想：** 冷却判断覆盖了所有 FindWay 入口吗？
+
+**参考答案：** 当前冷却用于已有有效路径时、目标移动后的重算分支；没有有效路径时 GetPosToGo 会直接尝试 FindWay。如果外部每帧调用，不可达状态仍可能每帧搜索。日志每两秒输出一次只减少日志，不等于减少算法计算。建议给失败重试也加调度或退避，并按帧预算分摊多个角色的请求。
+
+**继续追问：** open 是 Dictionary，选择最小 f 就是 O(1) 吗？答题要点：SearchCheapestCost 遍历全部 open，是 O(n)；可考虑最小堆，但需要处理节点代价下降、重复入堆及旧条目失效。当前代码还会在展开时创建方向数组，需测实际分配。
+
+**动手验证：** 让 1、10、50 个敌人的目标不可达，记录每帧寻路次数、展开节点数、CPU 时间与 GC Alloc。先证实瓶颈再改数据结构。
+
+源码定位：MovementController.GetPosToGo、FindWay；AStarPathFinder.SearchCheapestCost，S19、S22。">
+        <div class="question-top"><span class="q-number">Q36</span><span class="question-level">系统深入</span><label class="mastered"><input type="checkbox" data-q="36"><span>已掌握</span></label></div>
+        <h3>已有重寻路冷却为什么还可能掉帧</h3><div class="ask"><p>MovementController 有 0.5 秒冷却，敌人目标不可达时应该最多每秒算两次吧？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>冷却判断覆盖了所有 FindWay 入口吗？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>当前冷却用于已有有效路径时、目标移动后的重算分支；没有有效路径时 GetPosToGo 会直接尝试 FindWay。如果外部每帧调用，不可达状态仍可能每帧搜索。日志每两秒输出一次只减少日志，不等于减少算法计算。建议给失败重试也加调度或退避，并按帧预算分摊多个角色的请求。</p>
+<h4>面试官继续追问</h4><p>open 是 Dictionary，选择最小 f 就是 O(1) 吗？答题要点：SearchCheapestCost 遍历全部 open，是 O(n)；可考虑最小堆，但需要处理节点代价下降、重复入堆及旧条目失效。当前代码还会在展开时创建方向数组，需测实际分配。</p>
+<div class="practice"><h4>动手验证</h4><p>让 1、10、50 个敌人的目标不可达，记录每帧寻路次数、展开节点数、CPU 时间与 GC Alloc。先证实瓶颈再改数据结构。</p>
+</div><div class="source"><p>源码定位：MovementController.GetPosToGo、FindWay；AStarPathFinder.SearchCheapestCost，<a href="#source-19" class="source-chip">S19</a>、<a href="#source-22" class="source-chip">S22</a>。</p>
+</div></div></details>
+      </article></section>
+<section class="chapter" id="stage-10" data-stage="10"><header class="chapter-heading"><span class="chapter-num">10</span><div><span class="eyebrow">STAGE 10 / 10</span><h2>像开发者一样排错和表达</h2></div><span class="chapter-range">Q37—Q40</span></header><article class="question" id="q37" data-search="Vector3.zero 为什么不适合表示所有失败 **面试官问：** 为什么 NPC 不愿意走向世界原点？为什么存档位置 (0,0,0) 可能变成默认出生点？
+
+**先想一想：** 零向量既可能是合法坐标，也被代码当作了特殊标记。
+
+**参考答案：** MovementController 无路径时返回 Vector3.zero；SceneChanger 收到零向量时改用默认出生点。这样合法数据与“失败/未指定”混在一起，调用者无法可靠区分。建议用 `TryGetWaypoint(out Vector3 point)` 的 bool 表达成功，或者带明确状态的结果类型；出生点请求用独立标志或可空值表达是否指定。
+
+**继续追问：** 换一个特别大的坐标当失败值呢？答题要点：仍依赖魔法值，扩大世界范围后还可能碰撞。接口应该明确表达状态，而不是靠猜数值。
+
+**动手验证：** 构造合法原点目标与无路径目标，要求两个结果可以被调用方区分；再测试保存和恢复原点位置。
+
+源码定位：MovementController.GetPosToGo、SceneChanger.OnLoadRequestEvent，S17、S22。">
+        <div class="question-top"><span class="q-number">Q37</span><span class="question-level">综合表达</span><label class="mastered"><input type="checkbox" data-q="37"><span>已掌握</span></label></div>
+        <h3>Vector3.zero 为什么不适合表示所有失败</h3><div class="ask"><p>为什么 NPC 不愿意走向世界原点？为什么存档位置 (0,0,0) 可能变成默认出生点？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>零向量既可能是合法坐标，也被代码当作了特殊标记。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>MovementController 无路径时返回 Vector3.zero；SceneChanger 收到零向量时改用默认出生点。这样合法数据与“失败/未指定”混在一起，调用者无法可靠区分。建议用 <code>TryGetWaypoint(out Vector3 point)</code> 的 bool 表达成功，或者带明确状态的结果类型；出生点请求用独立标志或可空值表达是否指定。</p>
+<h4>面试官继续追问</h4><p>换一个特别大的坐标当失败值呢？答题要点：仍依赖魔法值，扩大世界范围后还可能碰撞。接口应该明确表达状态，而不是靠猜数值。</p>
+<div class="practice"><h4>动手验证</h4><p>构造合法原点目标与无路径目标，要求两个结果可以被调用方区分；再测试保存和恢复原点位置。</p>
+</div><div class="source"><p>源码定位：MovementController.GetPosToGo、SceneChanger.OnLoadRequestEvent，<a href="#source-17" class="source-chip">S17</a>、<a href="#source-22" class="source-chip">S22</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q38" data-search="只用 StartsWith 能保证删除路径位于存档目录吗 **面试官问：** 当前 DeleteSave 会把路径规范化后做前缀检查，这样足够吗？
+
+**先想一想：** `C:\Game\SaveBackup\a.json` 是否也以 `C:\Game\Save` 开头？
+
+**参考答案：** 仅比较字符串前缀没有确认目录边界，相似名称的相邻目录也能匹配。建议使用目录边界明确的规范化比较或安全的相对路径校验，同时按目标平台考虑大小写、分隔符和链接策略。Path.GetFullPath 本身也可能因输入无效抛异常，应纳入错误处理。这里是在审查当前校验范围，不代表已经发生了误删。
+
+**继续追问：** UI 只列出存档文件，就可以忽略底层校验吗？答题要点：底层入口可能被其他代码调用，应自己守住输入契约，但无需把单机存档夸大成已实现完整安全沙箱。
+
+**动手验证：** 先只编写不执行删除的路径判断用例：真实子文件、相邻目录、包含 .. 的路径、空字符串。禁止拿真实文件试删。
+
+源码定位：SaveSystem.DeleteSave，S16。">
+        <div class="question-top"><span class="q-number">Q38</span><span class="question-level">综合表达</span><label class="mastered"><input type="checkbox" data-q="38"><span>已掌握</span></label></div>
+        <h3>只用 StartsWith 能保证删除路径位于存档目录吗</h3><div class="ask"><p>当前 DeleteSave 会把路径规范化后做前缀检查，这样足够吗？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p><code>C:\Game\SaveBackup\a.json</code> 是否也以 <code>C:\Game\Save</code> 开头？</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>仅比较字符串前缀没有确认目录边界，相似名称的相邻目录也能匹配。建议使用目录边界明确的规范化比较或安全的相对路径校验，同时按目标平台考虑大小写、分隔符和链接策略。Path.GetFullPath 本身也可能因输入无效抛异常，应纳入错误处理。这里是在审查当前校验范围，不代表已经发生了误删。</p>
+<h4>面试官继续追问</h4><p>UI 只列出存档文件，就可以忽略底层校验吗？答题要点：底层入口可能被其他代码调用，应自己守住输入契约，但无需把单机存档夸大成已实现完整安全沙箱。</p>
+<div class="practice"><h4>动手验证</h4><p>先只编写不执行删除的路径判断用例：真实子文件、相邻目录、包含 .. 的路径、空字符串。禁止拿真实文件试删。</p>
+</div><div class="source"><p>源码定位：SaveSystem.DeleteSave，<a href="#source-16" class="source-chip">S16</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q39" data-search="性能优化之前应该测什么 **面试官问：** 50 个敌人同屏后掉帧，你会先对象池、改算法还是合批？
+
+**先想一想：** 先区分 CPU、GPU、分配、物理和加载卡顿，才能决定改哪里。
+
+**参考答案：** 建立固定场景与相同操作路径，在目标设备或接近实际构建条件下采样帧时间。CPU 时间线看寻路、脚本、物理与 UI；结合渲染指标区分 GPU/绘制压力；GC Alloc 看分配来源。项目可重点观察无路径重算、OverlapCircleAll、箭的创建销毁和高频路径数组转换，但这些只是候选，不能未测就断言谁最慢。
+
+**继续追问：** 把所有 ToList 都删掉可以吗？答题要点：有些是为遍历稳定性而做的低频快照；先看频率和正确性目的。不能用节省少量分配换来集合修改异常。
+
+**动手验证：** 每次只改一个因素，记录相同负载下的典型帧、最慢帧、分配字节和寻路次数；优化后重跑同样流程。不填写没有实测的提升百分比。
+
+源码定位：PlayerCombat、PlayerBow、DataManager、MovementController，S02、S04、S14、S22。参阅 Unity 的[垃圾回收优化建议](https://docs.unity3d.com/2022.3/Documentation/Manual/performance-garbage-collection-best-practices.html)。">
+        <div class="question-top"><span class="q-number">Q39</span><span class="question-level">综合表达</span><label class="mastered"><input type="checkbox" data-q="39"><span>已掌握</span></label></div>
+        <h3>性能优化之前应该测什么</h3><div class="ask"><p>50 个敌人同屏后掉帧，你会先对象池、改算法还是合批？</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>先区分 CPU、GPU、分配、物理和加载卡顿，才能决定改哪里。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>建立固定场景与相同操作路径，在目标设备或接近实际构建条件下采样帧时间。CPU 时间线看寻路、脚本、物理与 UI；结合渲染指标区分 GPU/绘制压力；GC Alloc 看分配来源。项目可重点观察无路径重算、OverlapCircleAll、箭的创建销毁和高频路径数组转换，但这些只是候选，不能未测就断言谁最慢。</p>
+<h4>面试官继续追问</h4><p>把所有 ToList 都删掉可以吗？答题要点：有些是为遍历稳定性而做的低频快照；先看频率和正确性目的。不能用节省少量分配换来集合修改异常。</p>
+<div class="practice"><h4>动手验证</h4><p>每次只改一个因素，记录相同负载下的典型帧、最慢帧、分配字节和寻路次数；优化后重跑同样流程。不填写没有实测的提升百分比。</p>
+</div><div class="source"><p>源码定位：PlayerCombat、PlayerBow、DataManager、MovementController，<a href="#source-02" class="source-chip">S02</a>、<a href="#source-04" class="source-chip">S04</a>、<a href="#source-14" class="source-chip">S14</a>、<a href="#source-22" class="source-chip">S22</a>。参阅 Unity 的<a href="https://docs.unity3d.com/2022.3/Documentation/Manual/performance-garbage-collection-best-practices.html">垃圾回收优化建议</a>。</p>
+</div></div></details>
+      </article>
+<article class="question" id="q40" data-search="如何介绍项目并接住质疑 **面试官问：** 用两分钟介绍你的项目。选一个你理解最深的系统，再说一个当前不足和改进办法。
+
+**先想一想：** 功能清单只能说明做过什么，调用链和取舍才能说明你理解了什么。
+
+**参考答案骨架：** “这是一个 2D 俯视角 ARPG 学习项目，包含近远程战斗、背包商店、任务对话和存档。我重点学习了……。以存档为例，各对象通过 ISaveable 提供状态，DataManager 汇总，SaveSystem 写文件；读档复用了场景事件，因此用请求标记避免自动保存覆盖快照。当前仍有……边界，我会先用……复现，再做……改进，用……验证。”
+
+**继续追问：** 哪部分是参考教程或借助工具完成的？答题要点：如实说明来源与自己的工作范围；区分“跟着做出来”“读懂并修改过”“独立设计且验证过”。不会的部分说明你的定位路径，不编造实现经历。
+
+**动手验证：** 录音两分钟，检查每个术语能否展开成具体方法和数据；删去“完全解耦”“永不出错”“性能很好”等没有证据的说法。再任选 Q20、Q27 或 Q36 接受连续追问。">
+        <div class="question-top"><span class="q-number">Q40</span><span class="question-level">综合表达</span><label class="mastered"><input type="checkbox" data-q="40"><span>已掌握</span></label></div>
+        <h3>如何介绍项目并接住质疑</h3><div class="ask"><p>用两分钟介绍你的项目。选一个你理解最深的系统，再说一个当前不足和改进办法。</p>
+</div>
+        <details class="hint"><summary>卡住了？看一个提示 <span>＋</span></summary><div><p>功能清单只能说明做过什么，调用链和取舍才能说明你理解了什么。</p>
+</div></details>
+        <details class="answer"><summary><span class="reveal-label">查看参考答案与追问</span><span class="chevron">↓</span></summary><div class="answer-body">
+        <h4>参考答案</h4><p>“这是一个 2D 俯视角 ARPG 学习项目，包含近远程战斗、背包商店、任务对话和存档。我重点学习了……。以存档为例，各对象通过 ISaveable 提供状态，DataManager 汇总，SaveSystem 写文件；读档复用了场景事件，因此用请求标记避免自动保存覆盖快照。当前仍有……边界，我会先用……复现，再做……改进，用……验证。”</p>
+<h4>面试官继续追问</h4><p>哪部分是参考教程或借助工具完成的？答题要点：如实说明来源与自己的工作范围；区分“跟着做出来”“读懂并修改过”“独立设计且验证过”。不会的部分说明你的定位路径，不编造实现经历。</p>
+<div class="practice"><h4>动手验证</h4><p>录音两分钟，检查每个术语能否展开成具体方法和数据；删去“完全解耦”“永不出错”“性能很好”等没有证据的说法。再任选 Q20、Q27 或 Q36 接受连续追问。</p>
+</div><div class="source"></div></div></details>
+      </article></section></div><div class="empty" id="empty" hidden><h2>没有符合条件的题目</h2><p>换一个关键词，或取消“只看未掌握”。</p></div>
+<section class="appendix" id="section-11"><h2>六个值得优先准备的项目追问</h2><div class="prose"><p>以下问题可用于面试前最后一次回顾。它们在前面的题目中已经给出了分析与验证方法。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>当前代码证据</th>
+<th>你应该能讲出的边界</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>击退与移动速度耦合</td>
+<td>KnockBack 调用再次乘 GetSpeed 的 SetMovement</td>
+<td>参数单位与最终速度，见 Q08</td>
+</tr>
+<tr>
+<td>重复提交可能再次扣物</td>
+<td>已完成目标判断返回 true，随后尝试扣物</td>
+<td>业务入口幂等，见 Q20</td>
+</tr>
+<tr>
+<td>暂停计数不成对</td>
+<td>PauseGame 未增加 pauseCount</td>
+<td>多个暂停拥有者，见 Q24</td>
+</tr>
+<tr>
+<td>读档期间再次触发加载事件</td>
+<td>IsLoadingSaveRequest 控制同步自动保存入口</td>
+<td>请求窗口与异步完成不同，见 Q27</td>
+</tr>
+<tr>
+<td>启发式没有体现远距离</td>
+<td>CalDistance 只有 1 与 1.414 两种结果</td>
+<td>估价函数与边代价，见 Q34</td>
+</tr>
+<tr>
+<td>无路时仍可能高频搜索</td>
+<td>无有效路径分支不检查重建冷却</td>
+<td>日志限频不等于计算限频，见 Q36</td>
+</tr>
+</tbody></table></div>
+</div></section>
+<section class="appendix" id="section-12"><h2>十四次练习安排</h2><div class="prose"><p>建议每次 45～60 分钟：10 分钟复述，20 分钟读代码，15 分钟验证，最后 5 分钟记录错题。如果题目仍讲不清，就重复本次，不必硬追进度。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>次数</th>
+<th>学习内容</th>
+<th>本次产出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>Q01～Q04</td>
+<td>玩家组件图与生命周期日志</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Q05～Q08</td>
+<td>输入长度、速度和击退的实测记录</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Q09～Q12</td>
+<td>一次近战与射箭的调用链</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Q13～Q16</td>
+<td>事件收发实验与订阅检查清单</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Q17～Q20</td>
+<td>购买、交任务失败条件矩阵</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Q21～Q24</td>
+<td>按钮监听、焦点和多来源暂停实验</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Q25～Q28</td>
+<td>保存与恢复的数据流图</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Q29～Q32</td>
+<td>场景切换成功与失败流程图</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Q33～Q36</td>
+<td>手算网格与寻路计数记录</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Q37～Q40</td>
+<td>接口反例与两分钟项目介绍</td>
+</tr>
+<tr>
+<td>11</td>
+<td>重做所有 0～1 分题</td>
+<td>用自己的话重写答案</td>
+</tr>
+<tr>
+<td>12</td>
+<td>完成下面的模拟面试 A</td>
+<td>录音并标注卡住的问题</td>
+</tr>
+<tr>
+<td>13</td>
+<td>完成下面的模拟面试 B</td>
+<td>排查步骤与改进验收条件</td>
+</tr>
+<tr>
+<td>14</td>
+<td>抽 8 题闭卷复述</td>
+<td>总结还不能证明的结论</td>
+</tr>
+</tbody></table></div>
+</div></section>
+<section class="appendix" id="section-13"><h2>模拟面试 A 基础与功能链路</h2><div class="prose"><p>总计约 25 分钟，先不看答案。基础回答正确后，再进入追问。</p>
+<ol>
+<li>2 分钟介绍项目，指出一个你亲自验证过的功能。对应 Q40。</li>
+<li>解释速度赋值为什么不乘 deltaTime。继续追问键盘斜向为什么不一定更快。对应 Q05、Q06。</li>
+<li>从按 J 开始讲完一次近战。继续追问动画结束事件丢失如何定位。对应 Q09、Q10。</li>
+<li>解释 SO 事件的实际调用方式。继续追问不同 SO 实例和重复订阅。对应 Q15、Q16。</li>
+<li>解释买物品时的容量和扣款。继续追问失败后哪些数据应保持不变。对应 Q17。</li>
+</ol>
+<p>每项 0～4 分：概念正确 1 分、结合代码 1 分、说明一个边界 1 分、提出可观察的验证 1 分。达到 16 分且没有概念性错误，再练 B。</p>
+</div></section>
+<section class="appendix" id="section-14"><h2>模拟面试 B 系统异常与取舍</h2><div class="prose"><p>总计约 35 分钟。每题先说你会观察什么，再说可能原因，最后提出修改与回归验证。</p>
+<ol>
+<li>读档之后出现当前背包覆盖旧档，分析事件时序。对应 Q25、Q27。</li>
+<li>重复提交一个已完成任务，奖励没重复但物品变少，定位入口保护。对应 Q20。</li>
+<li>场景加载失败后黑屏且不能动，列出必须恢复的状态。对应 Q24、Q31。</li>
+<li>目标不可达时 50 个敌人掉帧，但日志两秒才一条，解释为何不矛盾。对应 Q36、Q39。</li>
+<li>手算当前 CalDistance，再说明换启发式和改 open 集合各解决什么问题。对应 Q33～Q36。</li>
+</ol>
+<p>每项仍为 0～4 分。不要仅回答“加空判断”“上对象池”“用事件解耦”。要求说清条件、位置、预期和副作用。17 分以上说明这组问题已能较完整表达，仍需按投递岗位补充渲染、网络或平台等专项知识。</p>
+</div></section>
+<section class="appendix" id="section-15"><h2>三个进阶实作题</h2><div class="prose"><p>这些是后续练习，不是项目已完成的改动。每次只做一题，并保留修改前的复现场景。</p>
+<p><strong>实作一 让路径查询明确表达成功与失败</strong></p>
+<p>把“返回 Vector3.zero 表示失败”改成清晰的结果契约。验收：合法原点可达时能返回；不可达时明确失败；已有调用方全部处理失败；暂停和目标变化不造成错误移动。先完成 Q37 再做。</p>
+<p><strong>实作二 让任务提交可以安全重复调用</strong></p>
+<p>集中校验来源状态，合并物品需求，再执行扣除、状态提交和奖励发放。验收：连续提交同一任务只扣一次、只发一次；库存不足全部不扣；同物品多目标合计正确；读档恢复完成状态不发奖。另行说明奖励发放异常时如何处理，不能把单线程误认为不会失败。先完成 Q17～Q20 再做。</p>
+<p><strong>实作三 限制失败寻路的重试频率</strong></p>
+<p>为无路径状态增加可观察的重试节奏，并避免所有角色同帧重试。验收：不可达时每秒调用次数有明确上限；目标或障碍变化后能在定义的延迟内恢复；成功路径行为不退化；相同场景改前改后有 Profiler 对比。先完成 Q36、Q39 再做。</p>
+</div></section>
+<section class="appendix" id="section-16"><h2>错题记录模板</h2><div class="prose"><p>每次只记录具体缺口，避免写“Unity 基础不牢”这种难以执行的总结。</p>
+<pre><code class="language-text">题号与日期：
+我第一次怎么回答：
+不准确的那一句：
+实际源码位置与行为：
+我做的验证与结果：
+修正后的 60 秒回答：
+仍待验证的条件：
+下次复习日期：
+自评 0～3 分：
+</code></pre>
+</div></section>
+<section class="appendix" id="section-17"><h2>源码导航</h2><div class="prose"><p>这些链接指向本项目实际文件。方法名用于定位具体逻辑；代码以后修改时，应重新核对答案。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>编号</th>
+<th>文件与重点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td id="source-01">S01</td>
+<td><a href="../Assets/Scripts/Gameplay/Player/PlayerMovement.cs">PlayerMovement</a> 输入、状态、移动、击退</td>
+</tr>
+<tr>
+<td id="source-02">S02</td>
+<td><a href="../Assets/Scripts/Gameplay/Player/PlayerCombat.cs">PlayerCombat</a> 近战查询与动作结束</td>
+</tr>
+<tr>
+<td id="source-03">S03</td>
+<td><a href="../Assets/Scripts/Gameplay/Player/PlayerAnimationEventRelay.cs">PlayerAnimationEventRelay</a> 动画事件转发</td>
+</tr>
+<tr>
+<td id="source-04">S04</td>
+<td><a href="../Assets/Scripts/Gameplay/Player/PlayerBow.cs">PlayerBow</a> 与 <a href="../Assets/Scripts/Gameplay/Player/Arrow.cs">Arrow</a> 射击生命周期</td>
+</tr>
+<tr>
+<td id="source-05">S05</td>
+<td><a href="../Assets/Scripts/Contracts/YSingleton.cs">YSingleton</a> 单例初始化与清理</td>
+</tr>
+<tr>
+<td id="source-06">S06</td>
+<td><a href="../Assets/Scripts/UI/Joystick.cs">Joystick</a> 与 <a href="../Assets/Settings/Input/GameInput.inputactions">输入配置</a> 输入归一化</td>
+</tr>
+<tr>
+<td id="source-07">S07</td>
+<td><a href="../Assets/Scripts/Contracts/IDamageable.cs">IDamageable</a> 与 <a href="../Assets/Scripts/Contracts/ISaveable.cs">ISaveable</a> 能力契约</td>
+</tr>
+<tr>
+<td id="source-08">S08</td>
+<td><a href="../Assets/Scripts/SO/QuestSO.cs">QuestSO</a> 与 <a href="../Assets/Scripts/Gameplay/Quest/QuestManager.cs">QuestManager</a> 任务配置、状态与提交</td>
+</tr>
+<tr>
+<td id="source-09">S09</td>
+<td><a href="../Assets/Scripts/SO/Events/VoidEventSO.cs">VoidEventSO</a> 同步事件载体</td>
+</tr>
+<tr>
+<td id="source-10">S10</td>
+<td><a href="../Assets/Scripts/Inventory/Items/InventoryManager.cs">InventoryManager</a> 背包、交易、恢复</td>
+</tr>
+<tr>
+<td id="source-11">S11</td>
+<td><a href="../Assets/Scripts/Gameplay/Dialog/HistoryManager/ItemHistoryManager.cs">ItemHistoryManager</a> 数量记录</td>
+</tr>
+<tr>
+<td id="source-12">S12</td>
+<td><a href="../Assets/Scripts/Gameplay/Dialog/DialogManager.cs">DialogManager</a> 对话推进与按钮监听</td>
+</tr>
+<tr>
+<td id="source-13">S13</td>
+<td><a href="../Assets/Scripts/Gameplay/CanvasManagers/CanvasFocusStack.cs">CanvasFocusStack</a> 与 <a href="../Assets/Scripts/Contracts/ICanvasManager.cs">ICanvasManager</a> 焦点和真实显示状态</td>
+</tr>
+<tr>
+<td id="source-14">S14</td>
+<td><a href="../Assets/Scripts/Gameplay/Save/DataManager.cs">DataManager</a> 采集、恢复及自动保存</td>
+</tr>
+<tr>
+<td id="source-15">S15</td>
+<td><a href="../Assets/Scripts/Gameplay/Player/TimeManager.cs">TimeManager</a> 暂停状态</td>
+</tr>
+<tr>
+<td id="source-16">S16</td>
+<td><a href="../Assets/Scripts/Gameplay/Save/SaveSystem.cs">SaveSystem</a> 与 <a href="../Assets/Scripts/Gameplay/Save/Data.cs">Data</a> 持久化格式与文件读写</td>
+</tr>
+<tr>
+<td id="source-17">S17</td>
+<td><a href="../Assets/Scripts/Scene/SceneChanger.cs">SceneChanger</a> 异步切场景与恢复</td>
+</tr>
+<tr>
+<td id="source-18">S18</td>
+<td><a href="../Assets/Scripts/InitialLoad.cs">InitialLoad</a> 与 <a href="../Assets/Scripts/SO/GameSceneSO.cs">GameSceneSO</a> 启动入口和场景描述</td>
+</tr>
+<tr>
+<td id="source-19">S19</td>
+<td><a href="../Assets/Scripts/Gameplay/A%20Star/AStarPathFinder.cs">AStarPathFinder</a> 搜索与通行判断</td>
+</tr>
+<tr>
+<td id="source-20">S20</td>
+<td><a href="../Assets/Scripts/Gameplay/A%20Star/PathFinderDetails.cs">PathFinderDetails</a> 代价与父节点</td>
+</tr>
+<tr>
+<td id="source-21">S21</td>
+<td><a href="../Assets/Scripts/Gameplay/A%20Star/AStarNodeManager.cs">AStarNodeManager</a> 网格数据</td>
+</tr>
+<tr>
+<td id="source-22">S22</td>
+<td><a href="../Assets/Scripts/Gameplay/A%20Star/MovementController.cs">MovementController</a> 路径消费与重试</td>
+</tr>
+</tbody></table></div>
+</div></section>
+<section class="appendix" id="section-18"><h2>面试前最后核对</h2><div class="prose"><ul>
+<li>能否在不打开答案的情况下讲完“输入 → 状态 → 动画 → 伤害 → 结束”？</li>
+<li>能否解释一个自己实际复现过的问题，而不只是重复代码注释？</li>
+<li>能否区分当前实现、计划改进和已验证结果？</li>
+<li>能否从存档 ID、请求时序、业务幂等和路径状态各举一个反例？</li>
+<li>简历上写的优化效果是否有测量条件和数据？没有就描述实现，不填写数字。</li>
+<li>不确定时能否明确说出需要查看哪个文件、哪项配置和什么运行日志？</li>
+</ul>
+</div></section>
+<footer class="footer"><span>UNITY ARPG / 学习与面试训练 · 2026</span><a href="#top">回到顶部 ↑</a></footer></main></div>
+<script>
+const questions=[...document.querySelectorAll('.question')];
+const answers=[...document.querySelectorAll('details.answer')];
+const search=document.getElementById('search'),pending=document.getElementById('pending');
+const storageKey='unity-arpg-interview-guide-v1';
+let saved={};try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')||{};}catch(e){saved={};document.getElementById('storageNote').textContent='当前环境无法保存进度，仅本次有效';}
+function progress(){const count=questions.filter(q=>q.querySelector('input').checked).length;document.getElementById('progress').value=count;document.getElementById('progressText').textContent=count+' / 40';}
+questions.forEach(q=>{const c=q.querySelector('input');c.checked=saved[c.dataset.q]===true;q.classList.toggle('done',c.checked);c.addEventListener('change',()=>{saved[c.dataset.q]=c.checked;q.classList.toggle('done',c.checked);try{localStorage.setItem(storageKey,JSON.stringify(saved));}catch(e){document.getElementById('storageNote').textContent='进度仅在本次打开期间保留';}progress();filter();});});progress();
+function filter(){const query=search.value.trim().toLowerCase();let count=0;questions.forEach(q=>{const match=(('q'+q.id.slice(1)+' '+q.dataset.search).toLowerCase().includes(query))&&(!pending.checked||!q.querySelector('input').checked);q.hidden=!match;if(match)count++;});document.querySelectorAll('.chapter').forEach(s=>s.hidden=![...s.querySelectorAll('.question')].some(q=>!q.hidden));const filtering=!!query||pending.checked;document.querySelectorAll('.appendix').forEach(s=>s.hidden=filtering);document.querySelector('.hero').hidden=filtering;document.querySelector('.guide').hidden=filtering;document.getElementById('empty').hidden=count!==0;document.getElementById('clear').hidden=!filtering;document.getElementById('results').textContent=filtering?'找到 '+count+' / 40 道题':'共 40 道题 · 先回答，再看答案';}
+search.addEventListener('input',filter);pending.addEventListener('change',filter);document.getElementById('clear').addEventListener('click',()=>{search.value='';pending.checked=false;filter();});
+const expand=document.getElementById('expand');function expandLabel(){expand.textContent=answers.every(a=>a.open)?'收起全部答案':'展开全部答案';}expand.addEventListener('click',()=>{const value=!answers.every(a=>a.open);answers.forEach(a=>a.open=value);expandLabel();});answers.forEach(a=>a.addEventListener('toggle',expandLabel));
+let beforePrint=[];window.addEventListener('beforeprint',()=>{beforePrint=[...document.querySelectorAll('details')].map(d=>[d,d.open]);beforePrint.forEach(([d])=>d.open=true);});window.addEventListener('afterprint',()=>{beforePrint.forEach(([d,open])=>d.open=open);expandLabel();});document.getElementById('print').addEventListener('click',()=>window.print());
+const menu=document.getElementById('menu'),sidebar=document.getElementById('sidebar'),backdrop=document.getElementById('backdrop');function toggleMenu(open){sidebar.classList.toggle('show',open);backdrop.classList.toggle('show',open);menu.setAttribute('aria-expanded',String(open));}menu.addEventListener('click',()=>toggleMenu(!sidebar.classList.contains('show')));backdrop.addEventListener('click',()=>toggleMenu(false));document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleMenu(false);});
+document.querySelectorAll('.sidebar a,.source-chip').forEach(a=>a.addEventListener('click',()=>{if(search.value||pending.checked){search.value='';pending.checked=false;filter();}toggleMenu(false);}));
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.nav-item').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));}});},{rootMargin:'-12% 0px -65% 0px',threshold:0});document.querySelectorAll('.chapter').forEach(s=>observer.observe(s));
+</script></body></html>

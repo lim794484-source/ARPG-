@@ -1,0 +1,140 @@
+@startuml Enemy_NPC_System
+
+!pragma layout smetana
+left to right direction
+
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam padding 2
+skinparam wrapWidth 140
+
+title Enemy & NPC System
+
+enum EnemyState {
+    Idle
+    Chasing
+    Attacking
+    KnockBack
+}
+
+enum NPCState {
+    Idle
+    Wander
+    Patrol
+    Chat
+}
+
+package "Enemy AI" #FFEBEE {
+    class EnemyMovement {
+        + detectionPoint : Transform
+        + playerMask : LayerMask
+        + aStarController : MovementController
+        + speed : int
+        + attackDetectRange : float
+        + playerDetectRange : float
+        - enemyState : EnemyState
+        + AnimatorSM(newState : EnemyState) : void
+        - CheckForPlayer() : void
+        - Chase() : void
+        - SetVelocity(direction : Vector2, speed : float) : void
+    }
+
+    class EnemyCombat {
+        + attackPoint : Transform
+        + playerLayer : LayerMask
+        + damage : int
+        + weaponRange : float
+        + konckBackForce : float
+        + stunTime : float
+        + Attack() : void
+    }
+
+    class EnemyHealth {
+        + currentHealth : int
+        + maxHealth : int
+        + expReward : int
+        + {static} OnDefeated : MonsterDefeated
+        + ChangeHealth(amount : int) : void
+    }
+
+    class EnemyKnockBack {
+        + Knockback(forceTransform : Transform, knockBackForce : float, stunTime : float, knockBackTime : float) : void
+    }
+}
+
+package "NPC Behaviors" #E3F2FD {
+    class NPCStateController {
+        + wanderScript : NPCWander
+        + chatScript : NPCChat
+        + patrolScript : NPCPatrol
+        + DefaultState : NPCState
+        + SwitchState(newState : NPCState) : void
+    }
+
+    class NPCPatrol {
+        + patrolSize : Vector2
+        + clockwise : bool
+        + speed : float
+        + waitTime : float
+        + aStarController : MovementController
+        - CalculateCornerPositions() : void
+        - GetNearestCornerIndex() : int
+    }
+
+    class NPCWander {
+        + speed : float
+        + waitTime : float
+        + patrolRadius : int
+        + aStarController : MovementController
+        - randomDirection() : Vector3
+    }
+
+    class NPCChat {
+        + dialogSO : DialogSO
+        + toggleDialogEvent : ToggleCanvasEventSO
+        - OnToggleDialogEvent(state : bool) : void
+    }
+}
+
+package "Interaction NPC" #FFF3E0 {
+    class ShopKeeper {
+        + ShopItems : List<ShopItems>
+        + ShopWeapon : List<ShopItems>
+        + ShopArmor : List<ShopItems>
+        + PortraitTarget : Transform
+        - OnTriggerEnter2D(collider : Collider2D) : void
+        - OnTriggerExit2D(collider : Collider2D) : void
+    }
+}
+
+EnemyMovement --> EnemyState : runtime state
+EnemyMovement --> MovementController : path following
+EnemyCombat --> PlayerHealth : deals damage
+EnemyCombat --> PlayerMovement : applies knockback
+EnemyKnockBack --> EnemyMovement : drives knockback state
+EnemyHealth --> ExpManager : defeat event
+
+NPCStateController --> NPCState : runtime state
+NPCStateController o-- NPCPatrol
+NPCStateController o-- NPCWander
+NPCStateController o-- NPCChat
+NPCPatrol --> MovementController : rectangular patrol
+NPCWander --> MovementController : random wander
+NPCChat --> DialogSO : dialogue entry
+NPCChat --> ToggleCanvasEventSO : dialog close request
+NPCChat --> DialogManager : start / advance / close dialog
+
+ShopKeeper --> ShopManager : register active shopkeeper
+ShopKeeper --> ShopItems : exposes inventory lists
+
+note bottom of NPCStateController
+Player proximity switches NPCs from movement states
+to chat state, then restores the configured default state.
+end note
+
+@enduml

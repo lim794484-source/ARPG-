@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e60c7d9dc6193e45803445b5892dfbb, type: 3}
+  m_Name: Meat
+  m_EditorClassIdentifier: 
+  itemName: 生肉
+  itemDescription: 生的但是很美味...？
+  icon: {fileID: -1236631724, guid: 23efda5836f30dd4985ebc0051f8f0b1, type: 3}
+  isGold: 0
+  isEXP: 0
+  stackableSize: 3
+  currentHealth: 2
+  maxHealth: 0
+  speed: 1
+  damage: 2
+  duration: 2

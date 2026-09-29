@@ -1,0 +1,111 @@
+@startuml AStar_Pathfinding
+
+!pragma layout smetana
+left to right direction
+
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam padding 2
+skinparam wrapWidth 140
+
+title A* Pathfinding System
+
+enum AStarNodeType {
+    Obstacle
+    Walkable
+}
+
+package "Grid Layer" #E8F5E9 {
+    class AStarNodeManager <<singleton>> {
+        + tilemaps : Tilemap[]
+        + obstacleLayers : LayerMask
+        - cellSize : float
+        - safetyMargin : float
+        - nodeCellMap : Dictionary<CellKey, AStarNode>
+        + GetNodeMap() : Dictionary<CellKey, AStarNode>
+        + GetCellSize() : float
+        + WorldToCell(worldPos : Vector3) : CellKey
+        + CellToWorld(cx : int, cy : int) : Vector3
+        - ApplySafetyMargin(...) : Vector3
+        - ProcessColliderObstacles() : void
+        - ProcessTileWithSubdivision(...) : void
+        - ProcessTile(layerName : string, cx : int, cy : int) : void
+    }
+
+    class AStarNode {
+        - x : int
+        - y : int
+        - nodeType : AStarNodeType
+        + GetNodeType() : AStarNodeType
+        + SetNodeType(newType : AStarNodeType) : void
+    }
+
+    class CellKey <<value>>
+}
+
+package "Pathfinding Layer" #E3F2FD {
+    class AStarPathFinder <<singleton>> {
+        + FindPath(optPos : Vector3, startPos : Vector3, endPos : Vector3) : Stack<PathFinderDetails>
+        + WorldToCell(worldPos : Vector3) : CellKey
+        + CellToWorld(cx : int, cy : int) : Vector3
+        + GetCellSize() : float
+        - NoCoverObstacleNodes(startCell : CellKey, optCell : CellKey) : bool
+        - RetracePath(endNode : PathFinderDetails) : Stack<PathFinderDetails>
+        - SearchCheapestCost(openDic : Dictionary<CellKey, PathFinderDetails>) : CellKey
+        - AddNodeToOpen(...) : void
+        - CanWalkDiagonally(x : int, y : int, dx : int, dy : int) : bool
+    }
+
+    class PathFinderDetails {
+        - x : int
+        - y : int
+        - cost : float
+        - disToBeg : float
+        - disToEnd : float
+        - fatherNode : PathFinderDetails
+        + GetX() : int
+        + GetY() : int
+        + GetCost() : float
+        + GetDisToBeg() : float
+        + GetFatherNode() : PathFinderDetails
+    }
+}
+
+package "Movement Layer" #FFF3E0 {
+    class MovementController {
+        - path : Stack<PathFinderDetails>
+        - threshold : float
+        - pathRebuildDistance : float
+        - pathRebuildCooldown : float
+        - pathRebuildTimer : float
+        - hasValidPath : bool
+        + GetPosToGo(optPos : Vector3, startPos : Vector3, endPos : Vector3) : Vector3
+        + ArrivedPos() : void
+        + ResetPath() : void
+        + GetThreshold() : float
+        - FindWay(optPos : Vector3, startPos : Vector3, endPos : Vector3) : bool
+        - ReFindWay(optPos : Vector3, startPos : Vector3, endPos : Vector3) : void
+        - OnDrawGizmos() : void
+    }
+}
+
+AStarNodeManager o-- AStarNode : nodeCellMap
+AStarNode --> AStarNodeType : nodeType
+AStarPathFinder --> AStarNodeManager : queries cells / node map
+AStarPathFinder *-- PathFinderDetails : builds path stack
+PathFinderDetails --> PathFinderDetails : fatherNode
+MovementController --> AStarPathFinder : requests path / rebuild
+MovementController --> AStarNodeManager : uses cell size
+
+note bottom of MovementController
+Reusable path consumer for enemies and NPCs.
+Handles waypoint consumption, target drift,
+and debug Gizmo visualization.
+end note
+
+@enduml

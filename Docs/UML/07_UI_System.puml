@@ -1,0 +1,255 @@
+@startuml UI_System
+
+!pragma layout smetana
+
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam padding 2
+skinparam wrapWidth 150
+
+title UI System
+
+enum CanvasToToggle {
+    ESC
+    GameOver
+    Stats
+    Skills
+    Dialog
+    Quest
+    Shop
+    Integrated
+    Backpack
+    SaveLoad
+    Default
+}
+
+enum QuestState {
+    Idle
+    Accepted
+    Decline
+    IsToComplete
+    Completed
+}
+
+package "Input & Focus Core" #E3F2FD {
+    class UIManager <<singleton>> {
+        + loadEventSO : SceneLoadEventSO
+        + toggleCanvasEvents : List<ToggleCanvasEventSO>
+        + inputBindings : List<CanvasInputBinding>
+        - canvasOpenOrder : LinkedList<CanvasToToggle>
+        - currentFocusCanvas : CanvasToToggle
+        + HandleFocus(canvas : CanvasToToggle) : void
+        + RequestCanvasToggle(canvas : CanvasToToggle) : void
+        + RequestCanvasClose(canvas : CanvasToToggle) : void
+        + ReportCanvasState(canvas : CanvasToToggle, state : bool) : void
+        + IsCanvasFocused(canvas : CanvasToToggle) : bool
+        - ApplyFocusChange(target : CanvasToToggle) : void
+        - HandleESCInput() : void
+        - RefreshFocusAfterClose(closedCanvas : CanvasToToggle) : void
+        - ResetCanvas() : void
+    }
+
+    class CanvasInputBinding {
+        + canvas : CanvasToToggle
+        + buttonName : string
+    }
+
+    interface ICanvasManager {
+        + ToggleCanvas(...) : void
+        + SetCanvaState(...) : void
+        + RefreshCanvaOrder(...) : void
+    }
+
+    class UIDrag {
+        + dragTarget : RectTransform
+        + canvasGroup : CanvasGroup
+        + dragCanvasType : CanvasToToggle
+        + OnDrag(eventData : PointerEventData) : void
+    }
+}
+
+package "Window Managers" #E8F5E9 {
+    class ESCMenuManager {
+        + ESCGroup : CanvasGroup
+        + toggleESCEvent : ToggleCanvasEventSO
+    }
+
+    class IntegratedUICanvasManager <<singleton>> {
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+        - canvasToToggle : List<CanvasToToggle>
+        - currentPageNum : int
+        - isMenuOpen : bool
+        + OnClickMenuToggleButton() : void
+        + OnClickNextButton() : void
+        + OnClickPrevutton() : void
+        - OnIntegratedButtonClick(canvasToToggle : CanvasToToggle) : void
+    }
+
+    class BackpackCanvasManager {
+        + currentCanvas : CanvasGroup
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+    }
+
+    class StatsCanvasManager <<singleton>> {
+        + statsCanvas : CanvasGroup
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+        + UpdateDamage() : void
+        + UpdateSpeed() : void
+        + UpdateAllStats() : void
+    }
+
+    class ToggleSkillTree {
+        + skillsCanvas : CanvasGroup
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+    }
+
+    class SaveCanvasPanelManager {
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+        - saveType : SaveType
+        - isPanelOpen : bool
+        + OnClickSave(group : SaveLoadButtonGroup) : void
+        + OnClickLoad(group : SaveLoadButtonGroup) : void
+        + OpenPanel() : void
+        + ClosePanel() : void
+    }
+
+    class ShopManager {
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+        + IsShopOpen : bool
+        + OpenShop(items : List<ShopItems>, weapon : List<ShopItems>, armor : List<ShopItems>) : void
+        + CloseShop() : void
+    }
+
+    class QuestManager <<singleton>> {
+        + questCanvaGroup : CanvasGroup
+        + openQuestEventSO : VoidEventSO
+        + loadQuestEventSO : LoadQuestEventSO
+        + questOptionsEventSO : QuestOptionsEventSO
+        + ToggleCanvasEvent : ToggleCanvasEventSO
+        + QuestRewardRequest : InventorySlotsStatsSO
+        - currentQuestState : QuestState
+        + SetCurrentQuest(quest : QuestSO) : void
+        + CloseQuestBoard() : void
+        + QuestStateChanged(quest : QuestSO, state : QuestState) : void
+        + UpdateObjectiveProgress(quest : QuestSO, obj : QuestObjective) : void
+    }
+
+    class DialogManager {
+        + dialogCanvasGroup : CanvasGroup
+        + SetDialogCanvas(state : bool) : void
+    }
+}
+
+package "Quest UI Flow" #FFF3E0 {
+    class QuestBoardManager {
+        + openQuestEvent : VoidEventSO
+        + loadQuestEventSO : LoadQuestEventSO
+        + toggleQuestEvent : ToggleCanvasEventSO
+    }
+
+    class QuestLogUI {
+        + openQuestEvent : VoidEventSO
+        + ShowQuestOffer() : void
+        + HandleQuestClicked(quest : QuestSO) : void
+        + DisPlayObjectives() : void
+    }
+
+    class QuestLogSlot {
+        + currentQuest : QuestSO
+        + SetQuest(quest : QuestSO) : void
+        + OnSlotClicked() : void
+    }
+
+    class QuestObjectiveSlot {
+        + RefreshObjectives(description : string, progress : string, isCompleted : bool) : void
+    }
+
+    class QuestRewardsSlot {
+        + DisplayReward(sprite : Sprite, quantity : int) : void
+    }
+
+    class QuestOptionsButton {
+        + questOptionsEventSO : QuestOptionsEventSO
+        + OnOptionButtonClicked() : void
+    }
+}
+
+package "Entry Buttons & Shortcuts" #ECEFF1 {
+    class ESCButton {
+        + escButton : Button
+        - canvasToESC : CanvasToToggle
+        - OnESC() : void
+    }
+
+    class OpenSaveLoadCanvasButton {
+        + toggleSaveLoadCanvasEvent : ToggleCanvasEventSO
+    }
+
+    class ShopToggles {
+        + OpenItemShop() : void
+        + OpenWeaponShop() : void
+        + OpenArmorShop() : void
+    }
+}
+
+BackpackCanvasManager ..|> ICanvasManager
+StatsCanvasManager ..|> ICanvasManager
+ToggleSkillTree ..|> ICanvasManager
+SaveCanvasPanelManager ..|> ICanvasManager
+ShopManager ..|> ICanvasManager
+QuestManager ..|> ICanvasManager
+IntegratedUICanvasManager ..|> ICanvasManager
+
+UIManager --> SceneLoadEventSO : resets all windows on scene load
+UIManager --> ToggleCanvasEventSO : dispatches toggle requests
+UIManager --> CanvasInputBinding : input map
+UIManager --> CanvasToToggle : focus & open order
+UIDrag --> UIManager : bring dragged window to front
+ESCButton --> UIManager : close specific canvas
+
+ESCMenuManager --> ToggleCanvasEventSO : subscribe ESC event
+ESCMenuManager --> TimeManager : pause / resume game
+ESCMenuManager --> UIManager : report ESC canvas state
+
+IntegratedUICanvasManager --> ToggleCanvasEventSO : subscribe integrated window
+IntegratedUICanvasManager --> UIManager : request target canvas toggles
+BackpackCanvasManager --> ToggleCanvasEventSO : subscribe backpack event
+StatsCanvasManager --> ToggleCanvasEventSO : subscribe stats event
+StatsCanvasManager --> StatsManager : refresh displayed stats
+ToggleSkillTree --> ToggleCanvasEventSO : subscribe skill event
+SaveCanvasPanelManager --> ToggleCanvasEventSO : subscribe save/load event
+SaveCanvasPanelManager --> SaveSystem : list / save / load files
+SaveCanvasPanelManager --> DataManager : prepare manual save
+SaveCanvasPanelManager --> UIManager : force focus when opened by button
+ShopManager --> ToggleCanvasEventSO : subscribe shop event
+QuestManager --> ToggleCanvasEventSO : subscribe quest event
+QuestManager --> VoidEventSO : open quest board
+QuestManager --> LoadQuestEventSO : load quests on board
+QuestManager --> QuestOptionsEventSO : apply quest state changes
+QuestManager --> InventorySlotsStatsSO : send quest rewards
+DialogManager --> UIManager : report dialog visibility
+
+QuestBoardManager --> ToggleCanvasEventSO : open board when in range
+QuestBoardManager --> LoadQuestEventSO : push board quests
+QuestBoardManager --> VoidEventSO : request quest UI open
+QuestLogUI --> QuestManager : display current quest state
+QuestLogUI o-- QuestObjectiveSlot : objective entries
+QuestLogUI o-- QuestRewardsSlot : reward entries
+QuestManager o-- QuestLogSlot : quest list entries
+QuestOptionsButton --> QuestOptionsEventSO : option click -> state change
+
+OpenSaveLoadCanvasButton --> ToggleCanvasEventSO : open save/load panel
+ShopToggles --> ShopManager : switch shop tabs
+
+note bottom of UIManager
+UIManager is the focus/order coordinator.
+Canvas managers only care about their own visibility,
+while UIManager decides which window is currently on top.
+end note
+
+@enduml

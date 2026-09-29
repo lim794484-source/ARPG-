@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3702dda32becabe4b903f0c35e67d66e, type: 3}
+  m_Name: PurpleBobs Greeting
+  m_EditorClassIdentifier: 
+  mainCharacter: {fileID: 11400000, guid: f05890e8cc1e8e145adeafa4f5052be4, type: 2}
+  dialogLines:
+  - speaker: {fileID: 11400000, guid: f05890e8cc1e8e145adeafa4f5052be4, type: 2}
+    text: 你好
+  - speaker: {fileID: 11400000, guid: e69c09f810cffc64bb4ecc29855d9d11, type: 2}
+    text: 嘿，你站在那儿做什么？
+  - speaker: {fileID: 11400000, guid: f05890e8cc1e8e145adeafa4f5052be4, type: 2}
+    text: 你真想知道吗？
+  nextDialogOptions:
+  - optionText: 了解更多
+    nextDialogNode: {fileID: 11400000, guid: 400cfa5d1a0d96948b5042eb69c08794, type: 2}
+  - optionText: 不感兴趣
+    nextDialogNode: {fileID: 11400000, guid: 2a9a4adff5c1da742bbe283b9a3c960c, type: 2}
+  refuseDialogs:
+  - {fileID: 11400000, guid: 1b062de2d2f92ac419d4efc86dde1f0e, type: 2}
+  onlyTriggeredOnce: 0
+  parentDialog: {fileID: 0}

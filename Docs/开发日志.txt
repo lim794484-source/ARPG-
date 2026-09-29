@@ -1,0 +1,191 @@
+﻿2026-08-09：
+重构优化 包含：
+retry模块 使用全局配置——retry时自动查找并匹配
+focus事件不再复用toggleSO
+单例相关代码：拆分UIManager
+计划 拆分更多单例 并且按照MVC架构规范代码、借助addressables引入xlua
+2026-05-09：
+补充开发日志并整理文档
+根据 GameGuide.txt 和当前工程状态撰写中英逐行对照 README
+同步整理项目入口、操作说明和存档说明
+
+2026-05-08：
+复核当前可玩流程和主要场景入口
+整理操作说明，准备文档同步
+
+2026-05-07：
+梳理项目结构和核心系统模块
+准备 README 所需的功能摘要和目录说明
+509：存档系统完成——打通了UI和逻辑层
+507~508：一些重构加上 Save&Load 存档画布组和系统默认存档、新加载存档的逻辑
+506：重构了UIManager、ShopKeeper
+
+505：加了背包系统（卡了一些bug），加了拖拽脚本
+
+504：重构了条件对话方案，使得依赖管理更自然（创建了依赖DialogSO的RefuseDialogSO子类），不依赖枚举匹配。并且取消运行时的hasChated布尔变量，收回到相关的historyManager内进行记录
+
+503：增加了每个菜单界面的“X"退出按钮，增加了WebGL、移动端构建时的摇杆画布组，但是实际上效果不佳
+
+501：
+实装集成菜单，新增了输入状态类UIInputState 通过配置SO、利用状态机逻辑，并且结合枚举类使得集成菜单和其它的面板互斥。
+
+428：
+使用事件通信重构了商店系统：修复了使用ShopPortraitCameraController处理跨场景商店NPC头像渲染的一些bug
+整合所有画布组到UIManager统一管理：改用事件订阅模式，移除各自Update中的Input检测
+任务系统优化：QuestLogSlot新增状态重置，已完成任务在打开board时自动标记完成态
+
+426：
+重构了loot脚本事件系统（loot event）：新增LootEventSO事件，Loot脚本通过事件系统与InventoryManager通信
+任务奖励实装（questReward）：现在可以真正获得任务奖励（包括经验），ExpManager脚本完善
+任务系统优化部分：优化了任务完成提示和任务条目刷新逻辑
+修复了Retry之后会卡住的bug
+修复了角色切换时攻击会卡住动画的bug
+
+424：
+调试：新增Scene2场景，Retry按钮修复
+任务接受/拒绝/完成（Quest Accept\Decline\Completed）：QuestOptionsEventSO事件，QuestOptionsButton脚本
+任务板完善（QuestBoard）：QuestLogUI和QuestManager优化
+
+422：
+加入任务系统，并且优化任务体验，比如打开之后直接定位到第一个未完成任务
+支持了多个任务点，用事件系统解耦了加载变更的问题
+任务板（QuestBoard）：新增QuestBoardManager、QuestBoard预制体，支持在场景中放置任务板交互
+新增多个任务（PickAndChat、Shopping、DefaultQuest），完善QuestManager逻辑
+新增QuestOptionsButton（任务接受/拒绝/完成按钮），事件系统解耦任务交互
+
+421：
+任务日志完善（QuestLog）：新增QuestLogUI、QuestManager脚本，完善QuestSO数据结构
+任务目标（QuestObjective）：新增QuestObjectiveSlot、QuestRewardsSlot，EXP物品SO
+任务系统大体完成：支持多个任务点，用事件系统解耦了加载变更的问题
+
+420：
+任务日志（QuestLog）：创建QuestSO、LocationSO、QuestLogSlot等脚本和预制体，实现任务日志UI框架
+
+419：
+对话历史系统（dialog history）：重构对话历史管理脚本，加入GuidSO用于唯一标识
+新增YellowPawn NPC（第二个NPC），完善对话SO数据结构
+对话系统完善：对话选项分支、物品条件检测、拒绝条件对话等
+条件对话最终实现（conditional dialogs）：DialogManager和NPCChat完善条件对话逻辑
+
+417：
+场景淡入调试（scene fadein debug）：修复ButtonSceneToggler和SceneChanger中的场景切换淡入问题
+
+415：
+条件对话（Conditional Dialog）：通过可脚本化对象实现条件对话和分支控制
+新增ConversationHistoryManager、ItemHistoryManager、VisitedHistoryManager用于对话历史管理
+
+414：
+对话选项（ChatOptions）：加入对话选项UI和逻辑，完善DialogSO
+重构对话框系统（Dialog）：DialogManager支持选项分支，场景目录重整到GameScene目录下
+重构（refactor）：AStarPathFinder、MovementController、NPCPatrol等脚本优化
+
+410：
+修复了：换场景血量会直接刷满，Retry逻辑错误，会乱加载场景
+RetryButton welldone：重试按钮功能完成
+
+408：
+继续完善Menu场景
+问题：加载时打开canvas会导致场景加载出错，建议用inputsystem解决，全局禁用输入
+
+407：
+创建Menu场景，可以通过按钮点击事件切换到游戏场景1
+跨场景自动初始化Canvas
+异步场景加载与卸载时：先卸载并且禁用移动，加载完允许移动，保证不会因为玩家移动再次触发teleport干扰异步逻辑执行
+
+关于标题场景菜单栏
+未实现：
+Settings：打开设置
+Guide：游戏按键教学(直接打开.txt的简易实现)
+Load：读取静态游戏存档
+已实现：
+Start：开始游戏
+Exit：退出游戏
+
+关于退出菜单栏和游戏结束（GG）菜单栏：
+未实现：
+Save：存档
+已实现：
+Title回到标题场景
+Exit：结束游戏
+Retry：死亡后重新进入当前场景
+
+406：
+NPC状态机（NPC States）：NPC状态管理
+
+405：
+继续完善NPC对话（NPC Dialog）：对话管理器和DialogSO脚本
+
+404：
+NPC调试：完善PurplePawn动画控制器
+NPC游荡（NPC Wander）：NPC随机游荡逻辑
+NPC对话进行中（NPC Chat ing）：开始实现NPC对话系统
+NPC对话（NPC Dialog）：完善NPC对话功能
+
+401：
+加入动画资源（anim）：岩石、玩家等动画资源
+加入NPC（NPC）：PurplePawn NPC预制体，NPC相关脚本框架
+
+331：
+将A*寻路时的路径点做了微调
+1、偏移带对角障碍的路径点、计算新路径后比对旧路径
+2、选取起始点更近的头一点，有效防止新路径规划后倒着走
+3、加上朝向玩家的方向向量防止flip导致的鬼畜
+
+两格及以上的位置不再卡脚
+扫描获取静态的collider2D组件并且加入A*地图作为obstacle
+
+目前的问题：
+跨场景保存物品的数量没有处理好
+A*无法通过部分一格窄通道（特别是拐角），情况不明，合理怀疑和优化相关
+
+
+328：
+新增敌人A*寻路逻辑
+这次难点在于框架的搭建和部分寻路逻辑处理
+比如遍历最优路径和正确按照父节点导出寻路链
+easy A* done：基础A*寻路功能完成
+ex A* developing：开始扩展A*寻路
+
+325：
+完成loot拾取持久化（loot sustainable done）
+新增敌人A*寻路逻辑（A*）：提交初始A*寻路代码
+
+324：
+重构（Refactor）：精简PersistentScene和Scene1场景数据
+实现存档系统（SaveAndLoad coding）：DataManager保存/读取玩家位置、物品数据，完善InventoryManager跨场景物品保存
+加入Loot拾取持久化（loot sustainable）：场景切换时保持loot拾取状态记忆，自己丢弃的物品会被清理
+
+323：
+整体重构（refactor）：场景数据精简
+
+322：
+场景加载重构（sceneload refactor）：五次提交，重写场景切换逻辑
+
+321：
+调试场景切换和商店相关bug
+
+320：
+解决编码问题（UTF-8 BOM相关）
+整理项目文件结构：提交动画、预制体、瓦片地图资源，脚本目录重整到Assets/Scripts下
+加入字体资源
+添加许可证
+
+319：
+实现场景切换功能：新建SceneChanger、GameManager脚本
+实现跨场景加载：异步加载场景，加入ConfinerFinder（相机边界查找）
+调试场景加载逻辑
+
+318：
+项目初始化：创建Unity工程，提交初始脚本
+拥有挥砍射击动作及其动画、状态机代码和配置
+拥有敌人攻击动作，动画，状态机代码和配置
+拥有基本的瓦片地图布置
+拥有SO通信系统
+拥有商店、技能树、状态栏UI以及相关实现逻辑
+更新状态机：重构玩家移动脚本中的状态机逻辑，分离状态枚举
+处理击退状态（HandleKnockBackState）
+重构项目结构：将Enemy目录迁移到Units/Enemy，新建ShopKeeper脚本
+完善ShopKeeper功能：商店购买逻辑从ShopManager迁移到ShopKeeper脚本
+加入TimeManager：管理游戏暂停/恢复逻辑（用于商店、技能树等UI打开时暂停游戏）
+完善ShopToggles：商店开关UI脚本
+

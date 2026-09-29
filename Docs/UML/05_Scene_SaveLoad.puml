@@ -1,0 +1,218 @@
+@startuml Scene_SaveLoad_System
+
+!pragma layout smetana
+
+skinparam linetype ortho
+skinparam nodesep 40
+skinparam ranksep 50
+skinparam classAttributeIconSize 0
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+skinparam padding 2
+skinparam wrapWidth 140
+
+title Scene Management & Save/Load System
+
+enum PersistentType {
+    ReadWrite
+    DontPersist
+}
+
+enum SceneType {
+    Location
+    Menu
+    Retry
+}
+
+enum SaveType {
+    SystemSave
+    PalyerSave
+}
+
+package "Scene Bootstrap & Transition" #E3F2FD {
+    class InitialLoad {
+        + persistentScene : AssetReference
+        - Awake() : void
+    }
+
+    class SceneChanger <<singleton>> {
+        + initialPosition : Vector3
+        + fadeDuration : float
+        + initScene : GameSceneSO
+        + player : GameObject
+        + loadEventSO : SceneLoadEventSO
+        + sceneLoadedEvent : VoidEventSO
+        - currentScene : GameSceneSO
+        - OnLoadRequestEvent(scene : GameSceneSO, newPosition : Vector3, isToFade : bool) : void
+        - UnloadCurrentScene(sceneToLoad : GameSceneSO) : IEnumerator
+        - LoadScene(sceneToLoad : GameSceneSO) : void
+        - OnLoadCompleted(handle : AsyncOperationHandle<SceneInstance>) : void
+    }
+
+    class SceneToggler {
+        + loadEventSO : SceneLoadEventSO
+        + newPosition : Vector3
+        + sceneToLoad : GameSceneSO
+        + isToFade : bool
+    }
+
+    class ButtonSceneToggler {
+        + loadEventSO : SceneLoadEventSO
+        + sceneToLoad : GameSceneSO
+        + ButtonCanvas : CanvasGroup
+        + retryEventSO : VoidEventSO
+        + HandleSceneToggle() : void
+    }
+
+    class RetryManager {
+        + currentScene : GameSceneSO
+        + loadEventSO : SceneLoadEventSO
+        + retryEventSO : VoidEventSO
+        - OnReTry() : void
+    }
+
+    class ConfinerFinder {
+        - confiner : CinemachineConfiner2D
+        - OnSceneLoaded(scene : Scene, mode : LoadSceneMode) : void
+        - FindConfiner() : IEnumerator
+    }
+
+    class SceneDataForSave <<singleton>> {
+        + gameScenes : List<GameSceneSO>
+    }
+}
+
+package "Save / Load Core" #E8F5E9 {
+    interface ISaveable {
+        + GetDataID() : DataDefinition
+        + SaveData(data : Data) : void
+        + LoadData(data : Data) : void
+    }
+
+    class DataDefinition {
+        + persistentType : PersistentType
+        + ID : string
+    }
+
+    class DataManager <<singleton>> {
+        + dataSavedEvent : DataSaveEventSO
+        + sceneLoadEventSO : SceneLoadEventSO
+        + sceneLoadedEvent : VoidEventSO
+        - saveables : List<ISaveable>
+        - dataToSave : Data
+        + RegisterSaveableData(saveable : ISaveable) : void
+        + UnRegisterSaveableData(saveable : ISaveable) : void
+        + PrepareManualSaveData() : bool
+        + LoadFromData(data : Data) : void
+        - OnAutoSave(sceneToLoadSO : GameSceneSO, pos : Vector3, isToFade : bool) : void
+        - OnAutoLoad() : void
+    }
+
+    class SaveSystem <<singleton>> {
+        + IsLoadingSaveRequest : bool
+        + loadEventSO : SceneLoadEventSO
+        + dataSavedEvent : DataSaveEventSO
+        + WriteSave(saveType : SaveType) : string
+        + DeleteSave(savePath : string) : bool
+        + LoadSave(saveType : SaveType, savePath : string) : bool
+        + GetLatestLoadableSavePath(saveType : SaveType) : string
+        + GetSavesPath(saveType : SaveType) : string[]
+        - IsLoadableSaveFile(saveFile : string) : bool
+        - GetScene(data : Data) : GameSceneSO
+    }
+
+    class DynamicDataHandler <<static>> {
+        + PrepareForNewGameLoad(data : Data) : void
+        + ClearDynamicData(data : Data) : void
+    }
+
+    class Save {
+        + saveInfo : SaveInfo
+        + data : Data
+    }
+
+    class SaveInfo {
+        + saveID : string
+        + saveType : SaveType
+    }
+
+    class Data {
+        + lootsStatsDic : Dictionary<string, LootStatus>
+        + sceneIDAndPlayerPos : SceneAndPosition
+        + playerStatsData : PlayerStatsData
+    }
+
+    class LootStatus {
+        + position : SerializableVector3
+        + hasBeenPicked : bool
+    }
+
+    class SceneAndPosition {
+        + sceneID : string
+        + position : SerializableVector3
+    }
+
+    class SerializableVector3 {
+        + x : float
+        + y : float
+        + z : float
+        + ToVector3() : Vector3
+    }
+}
+
+package "Persisted Runtime Object" #FFF3E0 {
+    class Loot {
+        + item : ItemSO
+        + quantity : int
+        + canBePick : bool
+        + hasBeenPicked : bool
+        + Initialize(item : ItemSO, quantity : int) : void
+        + SaveData(data : Data) : void
+        + LoadData(data : Data) : void
+    }
+}
+
+SceneChanger --> SceneLoadEventSO : listens to load requests
+SceneChanger --> VoidEventSO : raises scene loaded
+SceneChanger --> GameSceneSO : loads scene assets
+SceneChanger --> TimeManager : pauses / resumes
+SceneChanger --> PlayerMovement : enable / disable input
+InitialLoad --> AssetReference : loads PersistentScene
+SceneToggler --> SceneLoadEventSO : raises transition
+SceneToggler --> GameSceneSO : target scene
+ButtonSceneToggler --> SceneLoadEventSO : raises transition
+ButtonSceneToggler --> VoidEventSO : retry request
+RetryManager --> SceneLoadEventSO : reloads current scene
+RetryManager --> StatsManager : respawn player
+ConfinerFinder --> Scene : listens after scene load
+
+DataManager o-- ISaveable : registry
+DataManager *-- Data : current snapshot
+DataManager --> SceneLoadEventSO : auto-save on transition
+DataManager --> VoidEventSO : auto-load after scene load
+DataManager --> DataSaveEventSO : confirm system save
+SaveSystem --> DataSaveEventSO : listens for save confirmation
+SaveSystem --> DataManager : consumes prepared data
+SaveSystem --> SceneLoadEventSO : triggers load request
+SaveSystem --> SceneDataForSave : resolves scene ID
+SaveSystem *-- Save : serialized payload
+Save *-- SaveInfo
+Save *-- Data
+Data *-- LootStatus
+Data *-- SceneAndPosition
+LootStatus *-- SerializableVector3
+SceneAndPosition *-- SerializableVector3
+DataDefinition --> PersistentType : persistence mode
+SaveInfo --> SaveType : save category
+Loot ..|> ISaveable
+Loot --> DataDefinition : persistent ID
+DynamicDataHandler --> Data : clears dynamic runtime sections
+GameSceneSO --> SceneType : scene type
+
+note bottom of DataManager
+Manual save prepares a snapshot on demand.
+Scene transitions also trigger automatic system saves.
+end note
+
+@enduml

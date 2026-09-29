@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c20d7772c0b33bb4f8e5074ea2cac581
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - item: {instanceID: 0}
+  - sr: {instanceID: 0}
+  - animator: {instanceID: 0}
+  - lootEvent: {fileID: 11400000, guid: 2df8d406342501048a2adc57a2ee2d20, type: 2}
+  - saveDataEvent: {fileID: 11400000, guid: 5515505a9aa8e8d48a08941905512b9f, type: 2}
+  - loadDataEvent: {fileID: 11400000, guid: 34ee6145d8eac2c46a84b66cb736ea70, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

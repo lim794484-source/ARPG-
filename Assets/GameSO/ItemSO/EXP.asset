@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e60c7d9dc6193e45803445b5892dfbb, type: 3}
+  m_Name: EXP
+  m_EditorClassIdentifier: 
+  itemName: 经验
+  itemDescription: 帮助你提升等级。
+  icon: {fileID: -398743610, guid: 042db71f2a5f9f944b39a735a5bdca44, type: 3}
+  isGold: 0
+  isEXP: 1
+  stackableSize: 10000000
+  currentHealth: 0
+  maxHealth: 0
+  speed: 0
+  damage: 0
+  duration: 0

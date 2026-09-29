@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e60c7d9dc6193e45803445b5892dfbb, type: 3}
+  m_Name: Wood
+  m_EditorClassIdentifier: 
+  itemName: 木材
+  itemDescription: 嗯...建个城堡怎么样？
+  icon: {fileID: 2040141174, guid: 7a387c4831355334a844dd5ff282df9c, type: 3}
+  isGold: 0
+  stackableSize: 10
+  currentHealth: 0
+  maxHealth: 0
+  speed: 0
+  damage: 0
+  duration: 0

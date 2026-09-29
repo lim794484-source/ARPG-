@@ -1,0 +1,112 @@
+# ========== Unity Generated ==========
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+
+# ========== Third-party assets kept local only ==========
+# Tiny Swords and other externally licensed visual/font source files.
+# Their .meta files stay tracked so Unity references can be restored locally.
+Materials/
+ThirdPartyAssets/
+Assets/ThirdParty/
+Assets/Sprites/**/*.png
+Assets/Sprites/**/*.jpg
+Assets/Sprites/**/*.jpeg
+Assets/Sprites/**/*.psd
+Assets/Sprites/**/*.ttf
+Assets/Sprites/**/*.otf
+Assets/Sprites/**/*.aseprite
+Assets/Sprites/UI/Fonts/AmountFont.asset
+Assets/Sprites/UI/Fonts/ChineseSDF.asset
+Assets/Sprites/UI/Fonts/UI Font.asset
+Assets/Plugins/Newtonsoft.Json.dll
+Assets/Plugins/Newtonsoft.Json.dll.meta
+
+# Discarded automated captures (kept local for review, not published)
+Docs/Images/06-quest-log.png
+Docs/Images/07-integrated-menu.png
+
+# ========== IDE / Editor ==========
+.vs/
+.vscode/
+.idea/
+omnisharp.json
+.gradle/
+.settings/
+.claude/
+.codegraph/
+.zcode/
+
+# Visual Studio / Rider
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.code-workspace
+*.bat
+# Build outputs
+Bin/
+Obj/
+bin-debug/
+bin-release/
+
+# ========== OS Files ==========
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ========== Crash / Cache Files ==========
+sysinfo.txt
+crashlytics-build.properties
+
+# ========== Addressables Generated ==========
+Assets/AddressableAssetsData/*/*.bin*
+Assets/AddressableAssetsData/Android/*
+Assets/AddressableAssetsData/iOS/*
+Assets/AddressableAssetsData/WebGL/*
+Assets/AddressableAssetsData/Windows/*
+Assets/AddressableAssetsData/macOS/*
+Assets/AddressableAssetsData/link.xml
+Assets/AddressableAssetsData/link.xml.meta
+
+# Generated Asset Bundles
+Assets/StreamingAssets/aa/
+
+# ========== Executables / Packages ==========
+*.swf
+*.air
+*.ipa
+*.apk
+*.aab
+*.exe
+
+# ========== Optional Large Raw Assets ==========
+# Assets/RawArt/
+# Assets/PSD/
+# Assets/Videos/
+# Assets/HugeSourceFiles/
+# Assets/Recordings/
+# Assets/Captures/
+
+# ========== Important ==========
+# Do NOT ignore:
+# - Assets/
+# - Packages/
+# - ProjectSettings/
+# - *.meta
+# - *.dll

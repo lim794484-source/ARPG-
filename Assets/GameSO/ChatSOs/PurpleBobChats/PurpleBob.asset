@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1acefe050034840b79a1cb9b02f11e, type: 3}
+  m_Name: PurpleBob
+  m_EditorClassIdentifier: 
+  guid: 58b22150-b217-4c9e-aa17-f43b1ce6be40
+  characterName: 紫袍鲍勃
+  characterPortrait: {fileID: 884934726, guid: 7e00d39f9631d0d4fa5984bd2fb85815, type: 3}
